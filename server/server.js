@@ -4,14 +4,16 @@ const cors = require('cors');
 const mongodb = require('mongodb');
 
 const app = express();
-
 const router = express.Router();
+const PORT = process.env.PORT || 4000;
+const MONGO_URI = process.env.DB_URI || 'mongodb://127.0.0.1:27017/osu-map';
+
 app.use(bodyParser.json());
 app.use(cors());
 app.use(router);
 
 async function loadRecords() {
-  const client = await mongodb.MongoClient.connect('mongodb://127.0.0.1:27017/osu-map', { useNewUrlParser: true });
+  const client = await mongodb.MongoClient.connect(MONGO_URI, { useNewUrlParser: true });
   return client.db('osu-map').collection('maps');
 }
 
@@ -20,4 +22,4 @@ router.get('/', async (req, res) => {
   res.send(await maps.find({}).toArray());
 });
 
-app.listen(4000, () => console.log('Started'));
+app.listen(PORT, () => console.log(`Server is listening at port: ${PORT}`));
