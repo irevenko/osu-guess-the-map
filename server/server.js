@@ -12,13 +12,14 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(router);
 
-async function loadRecords() {
-  const client = await mongodb.MongoClient.connect(MONGO_URI, { useNewUrlParser: true });
+async function loadMaps() {
+  const client = await mongodb.MongoClient.connect(MONGO_URI,
+    { useNewUrlParser: true, useUnifiedTopology: true });
   return client.db('osu-map').collection('maps');
 }
 
 router.get('/', async (req, res) => {
-  const maps = await loadRecords();
+  const maps = await loadMaps();
   res.send(await maps.find({}).toArray());
 });
 
