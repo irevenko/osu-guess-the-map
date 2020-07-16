@@ -11,6 +11,7 @@ const MONGO_URI = process.env.DB_URI || 'mongodb://127.0.0.1:27017/osu-map';
 app.use(bodyParser.json());
 app.use(cors());
 app.use(router);
+app.use(express.urlencoded({ extended: true }));
 
 async function loadMaps() {
   const client = await mongodb.MongoClient.connect(MONGO_URI,
@@ -18,7 +19,7 @@ async function loadMaps() {
   return client.db('osu-map').collection('maps');
 }
 
-router.get('/', async (req, res) => {
+router.get('/get_maps', async (req, res) => {
   const maps = await loadMaps();
   res.send(await maps.find({}).toArray());
 });

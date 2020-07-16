@@ -1,30 +1,28 @@
 <template>
 <div>
-  <div class="mx-auto mt-5" style="width: 600px;">
     <div v-if="mapImage">
-  <b-img :src="mapImage" fluid alt="Responsive image"></b-img>
+  <img :src="mapImage" alt="Responsive image">
     </div>
     <div>
-  <b-form inline class="mx-auto" style="width: 440px;">
-    <label class="sr-only" for="inline-form-input-username">Map Name</label>
-      <b-input id="inline-form-input-username" placeholder="Map Name"></b-input>
-    <b-button  @click="getMap()" variant="warning">Submit</b-button>
-  </b-form>
+      <input type="text" placeholder="Map Name">
+      <button  @click="getMap()">Submit</button>
+  <div>{{ name }}</div>
 </div>
     </div>
-  </div>
 </template>
 
 <script>
-import getMap from '../../lib/MapsService';
+import { getMap, getName } from '../../lib/MapsService';
 
 export default {
   name: 'MapGenerator',
   methods: {
     getMap,
+    getName,
   },
   data: () => ({
     mapImage: null,
+    name: null,
   }),
 };
 </script>
