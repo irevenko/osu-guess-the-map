@@ -1,11 +1,11 @@
 <template>
 <div>
-    <div v-if="mapImage">
+    <div v-if="mapImage" class="container">
   <img :src="mapImage" alt="Responsive image">
     </div>
-    <div>
-      <input type="text" placeholder="Map Name">
-      <button  @click="getMap()">Submit</button>
+    <div class="container">
+      <input class="input" type="text" placeholder="Map Name">
+      <button  class="button is-warning" @click="getMap()">Submit</button>
   <div>{{ name }}</div>
 </div>
     </div>
