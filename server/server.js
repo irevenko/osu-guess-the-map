@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongodb = require('mongodb');
+const mongoose = require('mongoose');
 
 const app = express();
 const router = express.Router();
@@ -23,5 +24,19 @@ router.get('/get_maps', async (req, res) => {
   const maps = await loadMaps();
   res.send(await maps.find({}).toArray());
 });
+
+async function compareImg(image) {
+  await mongoose.connect('mongodb://127.0.0.1:27017/osu-map', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  const schema = new mongoose.Schema({
+    name: String,
+    image: String,
+  });
+  const Map = mongoose.model('Map', schema);
+  const mapInDb = await Map.findOne({ image });
+  this.img = mapInDb.name;
+}
 
 app.listen(PORT, () => console.log(`Server is listening at port: ${PORT}`));
