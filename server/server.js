@@ -20,9 +20,21 @@ async function loadMaps() {
   return client.db('osu-map').collection('maps');
 }
 
-router.get('/get_maps', async (req, res) => {
+router.get('/get_all_maps', async (req, res) => {
   const maps = await loadMaps();
   res.send(await maps.find({}).toArray());
+});
+
+router.post('/check', async (req, res) => {
+
+  res.send(await maps.find({}).toArray());
+});
+
+router.get('/get_random_map', async (req, res) => {
+  const maps = await loadMaps();
+  const map = await maps.find({}).toArray();
+  const rand = Math.floor((Math.random() * 6) + 0);
+  res.send(map[rand]);
 });
 
 async function compareImg(image) {

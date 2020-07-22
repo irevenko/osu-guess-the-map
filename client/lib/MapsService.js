@@ -4,13 +4,11 @@
 /* eslint-disable no-unused-vars */
 import axios from 'axios';
 
-function getMap() {
+function getRandomMap() {
   return new Promise(async (resolve, reject) => {
     try {
-      const res = await axios.get('http://localhost:4000/get_maps');
-      const rand = Math.floor((Math.random() * 6) + 0);
-      this.mapImage = res.data[rand].image;
-      this.name = res.data[rand].name;
+      const res = await axios.get('http://localhost:4000/get_random_map');
+      this.mapImage = res.data.image;
     } catch (err) {
       reject(err);
     }
@@ -18,4 +16,4 @@ function getMap() {
 }
 
 // eslint-disable-next-line import/prefer-default-export
-export { getMap };
+export { getRandomMap };
