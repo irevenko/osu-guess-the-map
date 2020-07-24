@@ -1,14 +1,28 @@
 <template>
-<div>
+<div class="mt-5 text-center max-w-xl container mx-auto break-all">
   <button id="start-button"
-  @click="getRandomMap();displayGame();">Start</button>
+  class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded"
+  @click="getRandomMap();displayGame();">
+    Start
+  </button>
     <div v-if="mapImage">
   <img :src="mapImage" alt="Responsive image">
     </div>
-    <input id="map-input" class="input" type="text" placeholder="Map name">
-    <button id="map-button" @click="getRandomMap()">
+    <form class="w-full max-w-lg">
+  <div
+  class="flex items-center border-b border-b-2 border-teal-500 py-2">
+    <input id="map-input"
+    class="appearance-none bg-transparent border-none w-full
+    text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+    type="text" placeholder="Map name" aria-label="Enter the map">
+    <button id="map-button"
+    class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500
+    hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded"
+    type="button" @click="getRandomMap()">
       Submit
     </button>
+  </div>
+</form>
   <span>{{ img }}</span>
  </div>
 </template>
@@ -27,14 +41,12 @@ export default {
   methods: {
     getRandomMap,
     displayGame() {
-      document.getElementById('map-input').style.display = 'block';
-      document.getElementById('map-button').style.display = 'block';
+      document.querySelector('.max-w-lg').style.display = 'block';
       document.getElementById('start-button').style.display = 'none';
     },
   },
   mounted() {
-    document.getElementById('map-input').style.display = 'none';
-    document.getElementById('map-button').style.display = 'none';
+    document.querySelector('.max-w-lg').style.display = 'none';
   },
 };
 </script>
