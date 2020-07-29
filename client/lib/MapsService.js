@@ -15,5 +15,20 @@ function getRandomMap() {
   });
 }
 
+function getMapInput() {
+  const formData = new FormData(document.querySelector('form'));
+  const map = formData.get('map');
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await axios.post('http://localhost:4000/submit', {
+        map,
+      });
+      this.inputVal = res.data.map;
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
+
 // eslint-disable-next-line import/prefer-default-export
-export { getRandomMap };
+export { getRandomMap, getMapInput };

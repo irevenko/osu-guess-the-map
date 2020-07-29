@@ -1,23 +1,43 @@
-const Koa = require('koa');
-const render = require('koa-ejs');
-const bodyParser = require('koa-bodyparser');
-const path = require('path');
-const makeConnection = require('./utils/connection');
-const routes = require('./routes');
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const mongodb = require('mongodb');
+const mongoose = require('mongoose');
 
-const app = new Koa();
-const PORT = process.env.PORT || 3000;
+const app = express();
+const router = express.Router();
+const PORT = process.env.PORT || 4000;
+const MONGO_URI = process.env.DB_URI || 'mongodb://127.0.0.1:27017/osu-map';
 
-makeConnection(app, PORT);
+app.use(bodyParser.json());
+app.use(cors());
+app.use(router);
+app.use(express.urlencoded({ extended: true }));
 
-app.use(bodyParser());
-app.use(routes.routes());
-app.use(routes.allowedMethods({ throw: true }));
+async function loadMaps() {
+  const client = await mongodb.MongoClient.connect(MONGO_URI,
+    { useNewUrlParser: true, useUnifiedTopology: true });
+  return client.db('osu-map').collection('maps');
+}
 
-render(app, {
-  root: path.join(__dirname, 'views'),
-  layout: 'layouts/template',
-  viewExt: 'html',
-  cache: false,
-  debug: false,
+router.get('/get_all_maps', async (req, res) => {
+  const maps = await loadMaps();
+  res.send(await maps.find({}).toArray());
 });
+
+router.get('/get_random_map', async (req, res) => {
+  const maps = await loadMaps();
+  const map = await maps.find({}).toArray();
+  const rand = Math.floor((Math.random() * 6) + 0);
+  res.send(map[rand]);
+});
+
+router.post('/submit', async (req, res) => {
+  res.send(req.body);
+});
+
+// router.post('/compare', async (req, res) => {
+//   return 
+// });
+
+app.listen(PORT, () => console.log(`Server is listening at port: ${PORT}`));

@@ -11,35 +11,36 @@
     <form class="w-full max-w-lg">
   <div
   class="flex items-center border-b border-b-2 border-teal-500 py-2">
-    <input id="map-input"
+    <input id="map-input" name="map"
     class="appearance-none bg-transparent border-none w-full
     text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
     type="text" placeholder="Map name" aria-label="Enter the map">
     <button id="map-button"
     class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500
     hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded"
-    type="button" @click="getRandomMap()">
+    type="button" @click="getRandomMap();getMapInput();">
       Submit
     </button>
   </div>
 </form>
-  <span>{{ img }}</span>
+  <span>{{ inputVal }}</span>
  </div>
 </template>
 
 <script>
 import {
-  getRandomMap,
+  getRandomMap, getMapInput,
 } from '../../lib/MapsService';
 
 export default {
   name: 'MapGenerator',
   data: () => ({
     mapImage: null,
-    img: null,
+    inputVal: null,
   }),
   methods: {
     getRandomMap,
+    getMapInput,
     displayGame() {
       document.querySelector('.max-w-lg').style.display = 'block';
       document.getElementById('start-button').style.display = 'none';
