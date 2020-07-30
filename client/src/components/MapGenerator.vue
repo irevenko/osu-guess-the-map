@@ -1,7 +1,7 @@
 <template>
 <div class="mt-5 text-center max-w-xl container mx-auto break-all">
   <button id="start-button"
-  class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded"
+  class="bg-pink-500 hover:bg-pink-300 text-white font-bold px-4 py-2 rounded"
   @click="getRandomMap();displayGame();">
     Start
   </button>
@@ -10,23 +10,24 @@
     </div>
     <form class="w-full max-w-lg">
   <div
-  class="flex items-center border-b border-b-2 border-teal-500 py-2">
+  class="flex items-center border-b border-b-2 border-pink-300 py-2">
     <input id="map-input" name="map"
     class="appearance-none bg-transparent border-none w-full
     text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
     type="text" placeholder="Map name" aria-label="Enter the map">
-    <button id="map-button"
-    class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500
-    hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded"
-    type="button" @click="getMapInput();">
+    <button id="map-button" :disabled=enableDisable
+    class="flex-shrink-0 bg-pink-500 hover:bg-pink-400 border-pink-500
+    hover:border-pink-400 text-sm border-4 text-white py-1 px-2 rounded"
+    type="button" @click="count();getMapInput();enableDisable=true">
       Submit
     </button>
   </div>
 </form>
 <div>{{ isRight }}</div>
+<div>{{ count() }}</div>
   <button id="next-button"
-  class="mx-auto mt-5 bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded"
-  @click="clearAnswer();getRandomMap();">
+  class="mx-auto mt-5 bg-pink-500 hover:bg-pink-400 text-white font-bold px-4 py-2 rounded"
+  @click="clearAnswer();enableDisable=false;getRandomMap();">
     Next
   </button>
  </div>
@@ -44,6 +45,7 @@ export default {
     mapName: null,
     inputVal: null,
     isRight: null,
+    enableDisable: false,
   }),
   methods: {
     getRandomMap,
