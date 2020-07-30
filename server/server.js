@@ -36,8 +36,4 @@ router.post('/submit', async (req, res) => {
   res.send(req.body);
 });
 
-// router.post('/compare', async (req, res) => {
-//   return 
-// });
-
 app.listen(PORT, () => console.log(`Server is listening at port: ${PORT}`));
