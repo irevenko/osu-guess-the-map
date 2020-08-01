@@ -1,9 +1,9 @@
 <template>
 <div class="mt-5 text-center max-w-xl container mx-auto break-all">
   <button id="start-button"
-  class="bg-pink-500 hover:bg-pink-300 text-white font-bold px-4 py-2 rounded"
+  class="mt-24 bg-pink-500 hover:bg-pink-300 text-white font-bold px-4 py-2 rounded"
   @click="getRandomMap();displayGame();">
-    Start
+    Start  ▶️
   </button>
     <div v-if="mapImage">
   <img :src="mapImage" alt="Responsive image" width="640">
@@ -18,17 +18,20 @@
     <button id="map-button" :disabled=enableDisable
     class="flex-shrink-0 bg-pink-500 hover:bg-pink-400 border-pink-500
     hover:border-pink-400 text-sm border-4 text-white py-1 px-2 rounded"
-    type="button" @click="count();getMapInput();enableDisable=true">
-      Submit
+    type="button" @click="getMapInput();disableSubmitButton();">
+      Submit ⬅️
     </button>
   </div>
 </form>
-<div>{{ isRight }}</div>
-<div>{{ count() }}</div>
+<div>{{ isRight }} </div>
+<div id="score-counter">
+  <span>Score: </span>
+  <span class="text-pink-500"> {{ guessCounter }}</span>
+</div>
   <button id="next-button"
   class="mx-auto mt-5 bg-pink-500 hover:bg-pink-400 text-white font-bold px-4 py-2 rounded"
-  @click="clearAnswer();enableDisable=false;getRandomMap();">
-    Next
+  @click="clearInput();enableSubmitButton();getRandomMap();">
+    Next ➡️
   </button>
  </div>
 </template>
@@ -46,22 +49,31 @@ export default {
     inputVal: null,
     isRight: null,
     enableDisable: false,
+    guessCounter: 0,
   }),
   methods: {
     getRandomMap,
     getMapInput,
-    clearAnswer() {
+    enableSubmitButton() {
+      this.enableDisable = false;
+    },
+    disableSubmitButton() {
+      this.enableDisable = true;
+    },
+    clearInput() {
       this.isRight = '';
       document.getElementById('map-input').value = '';
     },
     displayGame() {
       document.querySelector('.max-w-lg').style.display = 'block';
       document.querySelector('#next-button').style.display = 'block';
+      document.querySelector('#score-counter').style.display = 'block';
       document.getElementById('start-button').style.display = 'none';
     },
   },
   mounted() {
     document.querySelector('.max-w-lg').style.display = 'none';
+    document.querySelector('#score-counter').style.display = 'none';
     document.querySelector('#next-button').style.display = 'none';
   },
 };

@@ -10,7 +10,6 @@ function getRandomMap() {
       const res = await axios.get('http://localhost:4000/get_random_map');
       this.mapImage = res.data.image;
       this.mapName = res.data.name;
-      console.log(res.data.name);
     } catch (err) {
       reject(err);
     }
@@ -26,9 +25,10 @@ function getMapInput() {
         map,
       });
       if (res.data.map === this.mapName) {
-        this.isRight = 'Right ✔️';
+        this.isRight = '✔️ Right ';
+        this.guessCounter += 1;
       } else {
-        this.isRight = 'Wrong ❌';
+        this.isRight = `❌ Wrong. It is ${this.mapName}`;
       }
     } catch (err) {
       reject(err);
