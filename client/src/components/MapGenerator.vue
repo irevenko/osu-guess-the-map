@@ -2,7 +2,7 @@
 <div class="mt-5 text-center max-w-xl container mx-auto break-all">
   <button id="start-button"
   class="mt-24 bg-pink-500 hover:bg-pink-300 text-white font-bold px-4 py-2 rounded"
-  @click="getRandomMap();displayGame();">
+  @click="getRandomMap();displayGame();getFiveMaps()">
     Start  ▶️
   </button>
     <div v-if="mapImage">
@@ -23,7 +23,9 @@
     </button>
   </div>
 </form>
-<div>{{ isRight }} </div>
+<span>{{ maps }}</span>
+<div class="text-green-500">{{ isRight }} </div>
+<div class="text-red-500">{{ isWrong }} </div>
 <div id="score-counter">
   <span>Score: </span>
   <span class="text-pink-500"> {{ guessCounter }}</span>
@@ -38,7 +40,7 @@
 
 <script>
 import {
-  getRandomMap, getMapInput,
+  getRandomMap, getMapInput, getFiveMaps,
 } from '../../lib/MapsService';
 
 export default {
@@ -48,12 +50,16 @@ export default {
     mapName: null,
     inputVal: null,
     isRight: null,
+    isWrong: null,
     enableDisable: false,
+    maps: [],
+    mapIndex: 0,
     guessCounter: 0,
   }),
   methods: {
     getRandomMap,
     getMapInput,
+    getFiveMaps,
     enableSubmitButton() {
       this.enableDisable = false;
     },
@@ -62,6 +68,7 @@ export default {
     },
     clearInput() {
       this.isRight = '';
+      this.isWrong = '';
       document.getElementById('map-input').value = '';
     },
     displayGame() {
