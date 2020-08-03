@@ -39,15 +39,19 @@ function getMapInput() {
       const res = await axios.post('http://localhost:4000/submit', {
         map,
       });
-      if (isValidMap(this.mapName)) {
-        if (res.data.map === this.mapName) {
+      if (isValidMap(res.data.map)) {
+        const rawInputData = res.data.map.toLowerCase().split(' ');
+        const inputData = rawInputData.map((m) => m.charAt(0).toUpperCase() + m.slice(1));
+        const validInputData = inputData.toString().replace(new RegExp(',', 'g'), ' ').trim();
+        if (validInputData === this.mapName) {
           this.isRight = '✔️ Right ';
           this.guessCounter += 1;
         } else {
           this.isWrong = `❌ Wrong. It is ${this.mapName}`;
         }
+      } else {
+        this.isWrong = 'Input data is not valid!';
       }
-      this.isRight = 'Input data is invalid!';
     } catch (err) {
       reject(err);
     }
@@ -55,4 +59,6 @@ function getMapInput() {
 }
 
 // eslint-disable-next-line import/prefer-default-export
-export { getRandomMap, getMapInput, getFiveMaps };
+export {
+  getRandomMap, getMapInput, getFiveMaps, isValidMap,
+};

@@ -1,8 +1,14 @@
 <template>
 <div class="mt-5 text-center max-w-xl container mx-auto break-all">
+  <div id="description" class="mt-16">
+    If you guess the map you get 1 point. <br>
+     If you guess artist and song name you get 2 points.  <br>
+     Enter map data like this: Artist - Song name  <br>
+     OR artist-song name OR song name  <br>
+  </div>
   <button id="start-button"
-  class="mt-24 bg-pink-500 hover:bg-pink-300 text-white font-bold px-4 py-2 rounded"
-  @click="getRandomMap();displayGame();getFiveMaps()">
+  class="mt-4 bg-pink-500 hover:bg-pink-300 text-white font-bold px-4 py-2 rounded"
+  @click="getRandomMap();displayGame();">
     Start  ▶️
   </button>
     <div v-if="mapImage">
@@ -23,7 +29,6 @@
     </button>
   </div>
 </form>
-<span>{{ maps }}</span>
 <div class="text-green-500">{{ isRight }} </div>
 <div class="text-red-500">{{ isWrong }} </div>
 <div id="score-counter">
@@ -40,7 +45,7 @@
 
 <script>
 import {
-  getRandomMap, getMapInput, getFiveMaps,
+  getRandomMap, getMapInput, getFiveMaps, isValidMap,
 } from '../../lib/MapsService';
 
 export default {
@@ -60,6 +65,7 @@ export default {
     getRandomMap,
     getMapInput,
     getFiveMaps,
+    isValidMap,
     enableSubmitButton() {
       this.enableDisable = false;
     },
@@ -76,6 +82,7 @@ export default {
       document.querySelector('#next-button').style.display = 'block';
       document.querySelector('#score-counter').style.display = 'block';
       document.getElementById('start-button').style.display = 'none';
+      document.getElementById('description').style.display = 'none';
     },
   },
   mounted() {
