@@ -8,7 +8,7 @@
   </div>
   <button id="start-button"
   class="mt-4 bg-pink-500 hover:bg-pink-300 text-white font-bold px-4 py-2 rounded"
-  @click="getRandomMap();displayGame();">
+  @click="getFiveMaps();setCurrentMap();displayGame();">
     Start  ▶️
   </button>
     <div v-if="mapImage">
@@ -33,11 +33,11 @@
 <div class="text-red-500">{{ isWrong }} </div>
 <div id="score-counter">
   <span>Score: </span>
-  <span class="text-pink-500"> {{ guessCounter }}</span>
+  <span class="text-pink-500"> {{ guessCounter }}/5</span>
 </div>
   <button id="next-button"
   class="mx-auto mt-5 bg-pink-500 hover:bg-pink-400 text-white font-bold px-4 py-2 rounded"
-  @click="clearInput();enableSubmitButton();getRandomMap();">
+  @click="clearInput();setCurrentMap();enableSubmitButton();">
     Next ➡️
   </button>
  </div>
@@ -45,7 +45,7 @@
 
 <script>
 import {
-  getRandomMap, getMapInput, getFiveMaps, isValidMap,
+  getMapInput, getFiveMaps, isValidMap,
 } from '../../lib/MapsService';
 
 export default {
@@ -53,19 +53,30 @@ export default {
   data: () => ({
     mapImage: null,
     mapName: null,
-    inputVal: null,
+    mapArtist: null,
     isRight: null,
     isWrong: null,
-    enableDisable: false,
     maps: [],
     mapIndex: 0,
     guessCounter: 0,
+    enableDisable: false,
   }),
   methods: {
-    getRandomMap,
     getMapInput,
     getFiveMaps,
     isValidMap,
+    setCurrentMap() {
+      setTimeout(() => {
+        if (this.mapIndex > 4) {
+          this.mapImage = null;
+          this.isRight = `Scored: ${this.guessCounter}`;
+          return;
+        }
+        this.mapImage = this.maps[this.mapIndex].image;
+        this.mapName = this.maps[this.mapIndex].name;
+        this.mapIndex += 1;
+      }, 50);
+    },
     enableSubmitButton() {
       this.enableDisable = false;
     },
