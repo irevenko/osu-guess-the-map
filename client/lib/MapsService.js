@@ -29,13 +29,15 @@ async function getMapInput() {
       const inputData = rawInputData.map((m) => m.charAt(0).toUpperCase() + m.slice(1));
       const validInputData = inputData.toString().replace(new RegExp(',', 'g'), ' ').trim();
       if (validInputData === this.mapName) {
+        this.isWrong = '';
         this.isRight = '✔️ Right ';
         this.guessCounter += 1;
       } else {
         this.isWrong = `❌ Wrong. It is ${this.mapName}`;
       }
     } else {
-      this.isWrong = 'Input data is not valid!';
+      this.isWrong = 'Input data is not valid! Try again.';
+      this.onOffSubmitBtn = false;
     }
   } catch (err) {
     return err;

@@ -4,5 +4,5 @@
 # ToDo
 * Song Artist additional points
 * Timer (15 sec) 
-* Actual Game cycle (Retry button)
+* Give random map set every game
 * New game modes (damaged or blured map image) (audio mode)
