@@ -1,13 +1,14 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable consistent-return */
-/* eslint-disable no-async-promise-executor */
 /* eslint-disable no-unused-vars */
 import axios from 'axios';
+import _ from 'lodash';
 
 async function getFiveMaps() {
   try {
     const res = await axios.get('http://localhost:4000/get_all_maps');
-    this.maps = await res.data;
+    const shuffledMaps = _.shuffle(res.data);
+    this.maps = shuffledMaps;
   } catch (err) {
     return err;
   }
@@ -25,15 +26,22 @@ async function getMapInput() {
       map,
     });
     if (isValidMap(res.data.map)) {
-      const rawInputData = res.data.map.toLowerCase().split(' ');
-      const inputData = rawInputData.map((m) => m.charAt(0).toUpperCase() + m.slice(1));
-      const validInputData = inputData.toString().replace(new RegExp(',', 'g'), ' ').trim();
-      if (validInputData === this.mapName) {
+      const rawNameGuess = res.data.map.toLowerCase().split(' ');
+      const nameGuess = rawNameGuess.map((m) => m.charAt(0).toUpperCase() + m.slice(1));
+      const validNameGuess = nameGuess.toString().replace(new RegExp(',', 'g'), ' ').trim();
+      const rawArtistInput = res.data.map.toLowerCase().split('-');
+      const rawArtistGuess = rawArtistInput[0];
+      let artistGuess = rawArtistGuess.split(' ').filter((item) => item !== '');
+      artistGuess = artistGuess.map((m) => m.charAt(0).toUpperCase() + m.slice(1));
+      const validArtistGuess = artistGuess.toString().replace(new RegExp(',', 'g'), ' ').trim();
+      console.log(validArtistGuess);
+      console.log(validNameGuess);
+      if (`${validArtistGuess} - ${validNameGuess}` === `${this.mapArtist} - ${this.mapName}`) {
         this.isWrong = '';
         this.isRight = '✔️ Right ';
         this.guessCounter += 1;
       } else {
-        this.isWrong = `❌ Wrong. It is ${this.mapName}`;
+        this.isWrong = `❌ Wrong. It is ${this.mapArtist} - ${this.mapName}`;
       }
     } else {
       this.isWrong = 'Input data is not valid! Try again.';

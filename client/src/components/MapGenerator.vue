@@ -21,7 +21,7 @@
     <button id="map-button" :disabled=onOffSubmitBtn
     class="flex-shrink-0 bg-pink-500 hover:bg-pink-400 border-pink-500
     hover:border-pink-400 text-sm border-4 text-white py-1 px-2 rounded"
-    type="button" @click="getMapInput();disableSubmitButton();">
+    type="button" @click="getMapInput();disableSubmitBtn();">
       {{ submitText }}
     </button>
   </div>
@@ -34,7 +34,7 @@
 </div>
   <button id="next-button"
   class="mx-auto mt-5 bg-pink-500 hover:bg-pink-400 text-white font-bold px-4 py-2 rounded"
-  @click="clearInput();checkMapIndex();setCurrentMap();enableSubmitButton();">
+  @click="clearInput();checkMapIndex();setCurrentMap();enableSubmitBtn();">
     {{ nextText }}
   </button>
     <div v-if="showRetryBtn">
@@ -81,8 +81,9 @@ export default {
       setTimeout(() => {
         this.mapImage = this.maps[this.mapIndex].image;
         this.mapName = this.maps[this.mapIndex].name;
+        this.mapArtist = this.maps[this.mapIndex].artist;
         this.mapIndex += 1;
-      }, 50);
+      }, 200);
     },
     checkMapIndex() {
       if (this.mapIndex === this.MAPS_NUMBER) {
@@ -94,36 +95,15 @@ export default {
         this.isRight = `Scored: ${this.guessCounter}`;
       }
     },
-    enableSubmitButton() {
-      this.onOffSubmitBtn = false;
-      this.isWrong = '';
-    },
-    disableSubmitButton() {
-      this.onOffSubmitBtn = true;
-    },
-    clearInput() {
-      this.isRight = '';
-      this.isWrong = '';
-      document.getElementById('map-input').value = '';
-    },
-    preventForm(e) {
-      e.preventDefault();
-    },
-    submitForm() {
-      document.getElementById('map-button').click();
-    },
     resetGame() {
       this.showRetryBtn = false;
       this.isRight = '';
       this.mapIndex = 0;
       this.guessCounter = 0;
+      this.maps = [];
+      this.getFiveMaps();
       this.displayGame();
       this.setCurrentMap();
-    },
-    hideGame() {
-      document.querySelector('.max-w-lg').style.display = 'none';
-      document.querySelector('#score-counter').style.display = 'none';
-      document.querySelector('#next-button').style.display = 'none';
     },
     displayGame() {
       document.querySelector('.max-w-lg').style.display = 'block';
@@ -131,6 +111,29 @@ export default {
       document.querySelector('#score-counter').style.display = 'block';
       document.getElementById('start-button').style.display = 'none';
       document.getElementById('description').style.display = 'none';
+    },
+    hideGame() {
+      document.querySelector('.max-w-lg').style.display = 'none';
+      document.querySelector('#score-counter').style.display = 'none';
+      document.querySelector('#next-button').style.display = 'none';
+    },
+    enableSubmitBtn() {
+      this.onOffSubmitBtn = false;
+      this.isWrong = '';
+    },
+    disableSubmitBtn() {
+      this.onOffSubmitBtn = true;
+    },
+    preventForm(e) {
+      e.preventDefault();
+    },
+    submitForm() {
+      document.getElementById('map-button').click();
+    },
+    clearInput() {
+      this.isRight = '';
+      this.isWrong = '';
+      document.getElementById('map-input').value = '';
     },
   },
   mounted() {

@@ -4,5 +4,5 @@
 # ToDo
 * Song Artist additional points
 * Timer (15 sec) 
-* Give random map set every game
+* Add more maps
 * New game modes (damaged or blured map image) (audio mode)
