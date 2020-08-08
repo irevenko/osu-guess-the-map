@@ -1,6 +1,7 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable consistent-return */
 /* eslint-disable no-unused-vars */
+/* eslint-disable no-else-return */
 import axios from 'axios';
 import _ from 'lodash';
 
@@ -18,6 +19,26 @@ function isValidMap(map) {
   return map && map.toString().trim() !== '';
 }
 
+function processInputData(mapData) {
+  if (mapData.includes('-')) {
+    const rawInputData = mapData.toLowerCase().split('-');
+    const rawArtistGuess = rawInputData[0];
+    let artistGuess = rawArtistGuess.split(' ').filter((item) => item !== '');
+    artistGuess = artistGuess.map((m) => m.charAt(0).toUpperCase() + m.slice(1));
+    const validArtistGuess = artistGuess.toString().replace(new RegExp(',', 'g'), ' ').trim();
+    const rawNameGuess = rawInputData[1];
+    let nameGuess = rawNameGuess.split(' ').filter((item) => item !== '');
+    nameGuess = nameGuess.map((m) => m.charAt(0).toUpperCase() + m.slice(1));
+    const validNameGuess = nameGuess.toString().replace(new RegExp(',', 'g'), ' ').trim();
+    return `${validArtistGuess} - ${validNameGuess}`;
+  } else {
+    const rawNameGuess = mapData.toLowerCase().split(' ');
+    const nameGuess = rawNameGuess.map((m) => m.charAt(0).toUpperCase() + m.slice(1));
+    const validNameGuess = nameGuess.toString().replace(new RegExp(',', 'g'), ' ').trim();
+    return validNameGuess;
+  }
+}
+
 async function getMapInput() {
   const formData = new FormData(document.querySelector('form'));
   const map = formData.get('map');
@@ -26,20 +47,16 @@ async function getMapInput() {
       map,
     });
     if (isValidMap(res.data.map)) {
-      const rawNameGuess = res.data.map.toLowerCase().split(' ');
-      const nameGuess = rawNameGuess.map((m) => m.charAt(0).toUpperCase() + m.slice(1));
-      const validNameGuess = nameGuess.toString().replace(new RegExp(',', 'g'), ' ').trim();
-      const rawArtistInput = res.data.map.toLowerCase().split('-');
-      const rawArtistGuess = rawArtistInput[0];
-      let artistGuess = rawArtistGuess.split(' ').filter((item) => item !== '');
-      artistGuess = artistGuess.map((m) => m.charAt(0).toUpperCase() + m.slice(1));
-      const validArtistGuess = artistGuess.toString().replace(new RegExp(',', 'g'), ' ').trim();
-      console.log(validArtistGuess);
-      console.log(validNameGuess);
-      if (`${validArtistGuess} - ${validNameGuess}` === `${this.mapArtist} - ${this.mapName}`) {
+      if (processInputData(res.data.map) === `${this.mapName}`) {
         this.isWrong = '';
-        this.isRight = '✔️ Right ';
+        this.isRight = `✔️ Correct. It is ${this.mapArtist} - ${this.mapName}`;
         this.guessCounter += 1;
+        this.pointsWon = '+1 point';
+      } else if (processInputData(res.data.map) === `${this.mapArtist} - ${this.mapName}`) {
+        this.isWrong = '';
+        this.isRight = `✔️ Correct. It is ${this.mapArtist} - ${this.mapName}`;
+        this.guessCounter += 2;
+        this.pointsWon = '+2 points';
       } else {
         this.isWrong = `❌ Wrong. It is ${this.mapArtist} - ${this.mapName}`;
       }
