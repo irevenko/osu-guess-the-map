@@ -74,7 +74,7 @@ export default {
     startText: 'Start  ▶️',
     retryText: 'Retry ⏏️',
     scoreText: 'Score: ',
-    rulesText: 'If you guess the map you get 1 point. If you guess artist and song name you get 2 points. Enter map data like this: Artist - Song name OR artist-song name OR song name',
+    rulesText: 'If you guess the map name you get 1 point. If you guess artist and song name you get 2 points. Enter map data like this: Artist - Song name OR artist-song name OR song name',
   }),
   methods: {
     getMapInput,

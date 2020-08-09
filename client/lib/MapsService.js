@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 async function getFiveMaps() {
   try {
-    const res = await axios.get('http://localhost:4000/get_all_maps');
+    const res = await axios.get('http://localhost:4000/api/get/all_maps');
     const shuffledMaps = _.shuffle(res.data);
     this.maps = shuffledMaps;
   } catch (err) {
@@ -43,7 +43,7 @@ async function getMapInput() {
   const formData = new FormData(document.querySelector('form'));
   const map = formData.get('map');
   try {
-    const res = await axios.post('http://localhost:4000/submit', {
+    const res = await axios.post('http://localhost:4000/api/post/submit', {
       map,
     });
     if (isValidMap(res.data.map)) {

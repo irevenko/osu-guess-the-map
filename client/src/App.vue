@@ -1,7 +1,12 @@
 <template>
   <div id="app">
-    <Navbar />
-    <MapGenerator />
+    <div id="nav">
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link>
+    </div>
+    <router-view/>
+   <Navbar/>
+   <MapGenerator/>
   </div>
 </template>
 
@@ -19,6 +24,3 @@ export default {
   }),
 };
 </script>
-
-<style>
-</style>
