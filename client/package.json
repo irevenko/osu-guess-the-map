@@ -18,7 +18,7 @@
     "module": "^1.2.5",
     "tailwindcss": "^1.5.2",
     "vue": "^2.6.11",
-    "vue-router": "^3.2.0"
+    "vue-router": "^3.4.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-eslint": "~4.4.0",
