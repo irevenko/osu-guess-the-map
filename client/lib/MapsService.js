@@ -61,7 +61,7 @@ async function getMapInput() {
         this.isWrong = `❌ Wrong. It is ${this.mapArtist} - ${this.mapName}`;
       }
     } else {
-      this.isWrong = 'Input data is not valid! Try again.';
+      this.isWrong = '⛔️ Input data is not valid! Try again 🔄.';
       this.onOffSubmitBtn = false;
     }
   } catch (err) {

@@ -12,10 +12,10 @@ const routes = [
     },
   },
   {
-    path: '/usual_game',
-    name: 'Map',
+    path: '/image_game',
+    name: 'ImageGame',
     component() {
-      return import('../views/Map.vue');
+      return import('../views/ImageGame.vue');
     },
   },
 ];
