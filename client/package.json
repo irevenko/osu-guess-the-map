@@ -17,8 +17,7 @@
     "lodash": "^4.17.19",
     "module": "^1.2.5",
     "vue": "^2.6.11",
-    "vue-router": "^3.4.2",
-    "vuetify": "^2.2.11"
+    "vue-router": "^3.4.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-eslint": "~4.4.0",
@@ -31,7 +30,6 @@
     "sass": "^1.19.0",
     "sass-loader": "^8.0.0",
     "vue-cli-plugin-vuetify": "~2.0.7",
-    "vue-template-compiler": "^2.6.11",
-    "vuetify-loader": "^1.6.0"
+    "vue-template-compiler": "^2.6.11"
   }
 }

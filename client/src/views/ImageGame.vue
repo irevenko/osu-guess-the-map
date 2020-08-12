@@ -1,51 +1,51 @@
 <template>
-<v-container>
-<div class="mt-10">
-  <div id="description">
+<div class="mt-5 text-center max-w-xl container mx-auto break-all">
+  <div id="description" class="mt-16">
     {{ rulesText }}
   </div>
-  <v-btn depressed small color="pink" id="start-button"
+  <button id="start-button"
+  class="mt-4 bg-pink-500 hover:bg-pink-300 text-white font-bold px-4 py-2 rounded"
   @click="getFiveMaps();setCurrentMap();displayGame();">
     {{ startText }}
-  </v-btn>
+  </button>
     <div v-if="mapImage">
   <img :src="mapImage" alt="Responsive image" width="640">
     </div>
-    <v-form v-on:submit.prevent="preventForm" autocomplete="off">
-    <v-col cols="12" md="4">
-      <v-row>
-    <v-text-field
-      color="pink"
-      id="map-input"  v-on:keyup.enter="submitForm"
-      placeholder="Map name"
-      name="map" label="Map name" required>
-    </v-text-field>
-    <v-btn depressed small color="pink lighten-4"
-      id="map-button" :disabled=onOffSubmitBtn
-      @click="getMapInput();disableSubmitBtn();"
-    >{{ submitText }}
-    </v-btn>
-      </v-row>
-    </v-col>
-</v-form>
-<div>{{ isRight }} </div>
-<div>{{ isWrong }} </div>
-<div>{{ pointsWon }} </div>
+    <form class="w-full max-w-lg" v-on:submit.prevent="preventForm" autocomplete="off">
+  <div
+  class="flex items-center border-b border-b-2 border-pink-300 py-2">
+    <input id="map-input" name="map" v-on:keyup.enter="submitForm"
+    class="appearance-none bg-transparent border-none w-full
+    text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+    type="text" placeholder="Map name" aria-label="Enter the map" autofocus>
+    <button id="map-button" :disabled=onOffSubmitBtn
+    class="flex-shrink-0 bg-pink-500 hover:bg-pink-400 border-pink-500
+    hover:border-pink-400 text-sm border-4 text-white py-1 px-2 rounded"
+    type="button" @click="getMapInput();disableSubmitBtn();">
+      {{ submitText }}
+    </button>
+  </div>
+</form>
+<div class="text-green-500">{{ isRight }} </div>
+<div class="text-red-500">{{ isWrong }} </div>
+<div class="text-pink-500">{{ pointsWon }} </div>
 <div id="score-counter">
   <span>{{ scoreText }}</span>
   <span class="text-pink-500"> {{ guessCounter }}/{{ MAPS_NUMBER * MAX_MAP_POINTS }}</span>
 </div>
-  <v-btn depressed small color="pink lighten-4" id="next-button"
+  <button id="next-button"
+  class="mx-auto mt-5 bg-pink-500 hover:bg-pink-400 text-white font-bold px-4 py-2 rounded"
   @click="clearInput();checkMapIndex();setCurrentMap();enableSubmitBtn();">
     {{ nextText }}
-  </v-btn>
+  </button>
     <div v-if="showRetryBtn">
-    <button id="retry-button" @click="resetGame();">
+    <button id="retry-button"
+  class="mx-auto mt-5 bg-pink-500 hover:bg-pink-400 text-white font-bold px-4 py-2 rounded"
+  @click="resetGame();">
     {{ retryText }}
   </button>
     </div>
  </div>
- </v-container>
 </template>
 
 <script>
@@ -54,7 +54,7 @@ import {
 } from '../../lib/MapsService';
 
 export default {
-  name: 'ImageGame',
+  name: 'MapGenerator',
   data: () => ({
     mapImage: null,
     mapName: null,
@@ -110,14 +110,14 @@ export default {
       this.setCurrentMap();
     },
     displayGame() {
-      document.querySelector('form').style.display = 'block';
+      document.querySelector('.max-w-lg').style.display = 'block';
       document.querySelector('#next-button').style.display = 'block';
       document.querySelector('#score-counter').style.display = 'block';
       document.getElementById('start-button').style.display = 'none';
       document.getElementById('description').style.display = 'none';
     },
     hideGame() {
-      document.querySelector('form').style.display = 'none';
+      document.querySelector('.max-w-lg').style.display = 'none';
       document.querySelector('#score-counter').style.display = 'none';
       document.querySelector('#next-button').style.display = 'none';
     },
@@ -127,6 +127,7 @@ export default {
     },
     disableSubmitBtn() {
       this.onOffSubmitBtn = true;
+      document.querySelector('#map-button').style.backgroundColor = 'gray';
     },
     preventForm(e) {
       e.preventDefault();
@@ -146,10 +147,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-  #map-input {
-    width: 100px !important;
-    max-width: 100px !important;
-  }
-</style>

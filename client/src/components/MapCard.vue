@@ -1,25 +1,22 @@
 <template>
-   <v-card class="mx-auto mt-10" max-width="400">
-    <v-img
-      class="white--text align-end"
-      height="150px"
-      src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpng.pngtree.com%2Fpng-vector%2F20190120%2Fourlarge%2Fpngtree-gallery-vector-icon-png-image_470660.jpg&f=1&nofb=1"
-    >
-      <v-card-title class="pink--text text--lighten-2">Usual image game</v-card-title>
-    </v-img>
-
-    <v-card-text class="text--primary">
-      <div>Guess by image. No time limits</div>
-    </v-card-text>
-
-    <v-card-actions>
-      <router-link to="/image_game">
-      <v-btn color="pink" text>
-        Start
-      </v-btn>
-      </router-link>
-    </v-card-actions>
-  </v-card>
+   <div class="w-64 mt-5 rounded overflow-hidden shadow-lg mx-auto container">
+  <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpng.pngtree.com%2Fpng-vector%2F20190120%2Fourlarge%2Fpngtree-gallery-vector-icon-png-image_470660.jpg&f=1&nofb=1"
+  alt="Sunset in the mountains">
+  <div class="px-6 py-4">
+    <div class="font-bold text-xl mb-2">Image Game</div>
+    <p class="text-gray-700 text-base">
+      Guess by image. No time limits
+    </p>
+  </div>
+  <div class="px-6 py-4">
+    <router-link to="/image_game">
+    <span class="inline-block bg-gray-200
+    rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
+    START
+    </span>
+    </router-link>
+  </div>
+</div>
 </template>
 
 <script>
