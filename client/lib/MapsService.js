@@ -62,6 +62,7 @@ async function getMapInput() {
       }
     } else {
       this.isWrong = '⛔️ Input data is not valid! Try again 🔄.';
+      document.querySelector('#map-button').className = 'flex-shrink-0 bg-pink-500 hover:bg-pink-400 border-pink-500 hover:border-pink-400 text-sm border-4 text-white py-1 px-2 rounded';
       this.onOffSubmitBtn = false;
     }
   } catch (err) {

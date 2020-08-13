@@ -18,6 +18,10 @@ const routes = [
       return import('../views/ImageGame.vue');
     },
   },
+  {
+    path: '/audio_game',
+    name: 'AudioGame',
+  },
 ];
 
 const router = new VueRouter({

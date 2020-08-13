@@ -1,7 +1,10 @@
 <template>
 <div class="mt-5 text-center max-w-xl container mx-auto break-all">
-  <div id="description" class="mt-16">
-    {{ rulesText }}
+  <div id="description" class="mt-16 text-base">
+    <p class="text-2xl">{{rulesHeading}}</p>
+    <div>{{ rulesText1 }}</div>
+    <div>{{ rulesText2 }}</div>
+    <div>{{ rulesText3 }}</div>
   </div>
   <button id="start-button"
   class="mt-4 bg-pink-500 hover:bg-pink-300 text-white font-bold px-4 py-2 rounded"
@@ -14,10 +17,10 @@
     <form class="w-full max-w-lg" v-on:submit.prevent="preventForm" autocomplete="off">
   <div
   class="flex items-center border-b border-b-2 border-pink-300 py-2">
-    <input id="map-input" name="map" v-on:keyup.enter="submitForm"
+    <input autofocus id="map-input" name="map" v-on:keyup.enter="submitForm"
     class="appearance-none bg-transparent border-none w-full
     text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
-    type="text" placeholder="Map name" aria-label="Enter the map" autofocus>
+    type="text" placeholder="Map name" aria-label="Enter the map">
     <button id="map-button" :disabled=onOffSubmitBtn
     class="flex-shrink-0 bg-pink-500 hover:bg-pink-400 border-pink-500
     hover:border-pink-400 text-sm border-4 text-white py-1 px-2 rounded"
@@ -29,6 +32,9 @@
 <div class="text-green-500">{{ isRight }} </div>
 <div class="text-red-500">{{ isWrong }} </div>
 <div class="text-pink-500">{{ pointsWon }} </div>
+<div class="text-xl" id="seconds-counter">
+  Time left: <span class="text-pink-500">{{secondsCounter}}</span>
+</div>
 <div id="score-counter">
   <span>{{ scoreText }}</span>
   <span class="text-pink-500"> {{ guessCounter }}/{{ MAPS_NUMBER * MAX_MAP_POINTS }}</span>
@@ -65,6 +71,8 @@ export default {
     maps: [],
     mapIndex: 0,
     guessCounter: 0,
+    secondsToGuess: 16,
+    secondsCounter: 0,
     onOffSubmitBtn: false,
     showRetryBtn: false,
     MAPS_NUMBER: 5,
@@ -74,28 +82,29 @@ export default {
     startText: 'Start  ▶️',
     retryText: 'Retry ⏏️',
     scoreText: 'Score: ',
-    rulesText: 'If you guess the map name you get 1 point. If you guess artist and song name you get 2 points. Enter map data like this: Artist - Song name OR artist-song name OR song name',
+    rulesHeading: 'Game Rules:',
+    rulesText1: 'If you guess the map name you get 1 point',
+    rulesText2: 'If you guess artist and song name you get 2 points',
+    rulesText3: 'Enter map data like this: Artist - Song name OR artist-song name OR song name',
   }),
   methods: {
     getMapInput,
     getFiveMaps,
     isValidMap,
     setCurrentMap() {
+      document.querySelector('input').focus();
       setTimeout(() => {
         this.mapImage = this.maps[this.mapIndex].image;
         this.mapName = this.maps[this.mapIndex].name;
         this.mapArtist = this.maps[this.mapIndex].artist;
+        this.launchTimer();
         this.mapIndex += 1;
       }, 200);
     },
     checkMapIndex() {
+      this.secondsToGuess = 16;
       if (this.mapIndex === this.MAPS_NUMBER) {
-        document.querySelector('#score-counter').style.display = 'none';
-        document.querySelector('.max-w-lg').style.display = 'none';
-        document.querySelector('#next-button').style.display = 'none';
-        this.mapImage = null;
-        this.showRetryBtn = true;
-        this.isRight = `Scored: ${this.guessCounter}`;
+        this.displayScoreScreen();
       }
     },
     resetGame() {
@@ -111,8 +120,10 @@ export default {
     },
     displayGame() {
       document.querySelector('.max-w-lg').style.display = 'block';
+      document.querySelector('input').focus();
       document.querySelector('#next-button').style.display = 'block';
       document.querySelector('#score-counter').style.display = 'block';
+      document.querySelector('#seconds-counter').style.display = 'block';
       document.getElementById('start-button').style.display = 'none';
       document.getElementById('description').style.display = 'none';
     },
@@ -120,14 +131,35 @@ export default {
       document.querySelector('.max-w-lg').style.display = 'none';
       document.querySelector('#score-counter').style.display = 'none';
       document.querySelector('#next-button').style.display = 'none';
+      document.querySelector('#seconds-counter').style.display = 'none';
+    },
+    displayScoreScreen() {
+      document.querySelector('#score-counter').style.display = 'none';
+      document.querySelector('.max-w-lg').style.display = 'none';
+      document.querySelector('#next-button').style.display = 'none';
+      document.querySelector('#seconds-counter').style.display = 'none';
+      this.mapImage = null;
+      this.showRetryBtn = true;
+      this.isRight = `Scored: ${this.guessCounter}`;
+    },
+    launchTimer() {
+      const timer = setInterval(() => {
+        this.secondsToGuess -= 1;
+        if (this.secondsToGuess === 0) {
+          clearInterval(timer);
+          this.disableSubmitBtn();
+        }
+        this.secondsCounter = this.secondsToGuess;
+      }, 1000);
     },
     enableSubmitBtn() {
       this.onOffSubmitBtn = false;
+      document.querySelector('#map-button').className = 'flex-shrink-0 bg-pink-500 hover:bg-pink-400 border-pink-500 hover:border-pink-400 text-sm border-4 text-white py-1 px-2 rounded';
       this.isWrong = '';
     },
     disableSubmitBtn() {
       this.onOffSubmitBtn = true;
-      document.querySelector('#map-button').style.backgroundColor = 'gray';
+      document.querySelector('#map-button').className = 'flex-shrink-0 bg-gray-500 hover:bg-gray-400 border-gray-500 hover:border-gray-400 text-sm border-4 text-white py-1 px-2 rounded';
     },
     preventForm(e) {
       e.preventDefault();
