@@ -11,8 +11,8 @@
   @click="getFiveMaps();setCurrentMap();displayGame();">
     {{ startText }}
   </button>
-    <div v-if="mapImage">
-  <img :src="mapImage" alt="Responsive image" width="640">
+    <div v-if="mapAudio" class="items-center" width="500">
+  <audio id="map-audio" :src="mapAudio" controls></audio>
     </div>
     <form class="w-full max-w-lg" v-on:submit.prevent="preventForm" autocomplete="off">
   <div
@@ -62,7 +62,7 @@ import {
 export default {
   name: 'MapGenerator',
   data: () => ({
-    mapImage: null,
+    mapAudio: null,
     mapName: null,
     mapArtist: null,
     isRight: null,
@@ -93,10 +93,13 @@ export default {
     setCurrentMap() {
       document.querySelector('input').focus();
       setTimeout(() => {
-        this.mapImage = this.maps[this.mapIndex].image;
+        this.mapAudio = this.maps[this.mapIndex].audio;
         this.mapName = this.maps[this.mapIndex].name;
         this.mapArtist = this.maps[this.mapIndex].artist;
         this.secondsToGuess = 15;
+        setTimeout(() => {
+          document.getElementById('map-audio').play();
+        }, 100);
         this.launchTimer();
         this.mapIndex += 1;
       }, 200);
@@ -149,7 +152,7 @@ export default {
       document.querySelector('.max-w-lg').style.display = 'none';
       document.querySelector('#next-button').style.display = 'none';
       document.querySelector('#seconds-counter').style.display = 'none';
-      this.mapImage = null;
+      this.mapAudio = null;
       this.showRetryBtn = true;
       this.isRight = `Scored: ${this.guessCounter}`;
     },
@@ -180,3 +183,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+  #map-audio {
+    width: 640px;
+  }
+</style>

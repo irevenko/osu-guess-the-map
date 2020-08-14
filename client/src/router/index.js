@@ -21,6 +21,9 @@ const routes = [
   {
     path: '/audio_game',
     name: 'AudioGame',
+    component() {
+      return import('../views/AudioGame.vue');
+    },
   },
 ];
 
