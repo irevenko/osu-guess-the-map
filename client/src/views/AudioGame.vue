@@ -14,14 +14,14 @@
     <div v-if="mapAudio" class="items-center" width="500">
   <audio id="map-audio" :src="mapAudio" controls></audio>
     </div>
-    <form class="w-full max-w-lg" v-on:submit.prevent="preventForm" autocomplete="off">
+    <form v-on:submit.prevent="preventForm" autocomplete="off">
   <div
   class="flex items-center border-b border-b-2 border-pink-300 py-2">
     <input autofocus id="map-input" name="map" v-on:keyup.enter="submitForm"
     class="appearance-none bg-transparent border-none w-full
     text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
     type="text" placeholder="Map name" aria-label="Enter the map">
-    <button id="map-button" :disabled=onOffSubmitBtn
+    <button id="submit-button" :disabled=onOffSubmitBtn
     class="flex-shrink-0 bg-pink-500 hover:bg-pink-400 border-pink-500
     hover:border-pink-400 text-sm border-4 text-white py-1 px-2 rounded"
     type="button" @click="getMapInput();disableSubmitBtn();">
@@ -33,9 +33,16 @@
 <div class="text-red-500">{{ isWrong }} </div>
 <div class="text-pink-500">{{ pointsWon }} </div>
 <div class="text-xl" id="seconds-counter">
-  Time left: <span class="text-pink-500">{{secondsToGuess}}</span>
+  <div>
+  <span>{{timeText}}</span>
+  <span class="text-pink-500">{{secondsToGuess}}</span>
+  </div>
 </div>
 <div id="score-counter">
+  <div id="map-info">
+    <span>{{mapText}}</span>
+    <span class="text-pink-500"> {{ mapIndex }}/{{ MAPS_NUMBER }}</span>
+  </div>
   <span>{{ scoreText }}</span>
   <span class="text-pink-500"> {{ guessCounter }}/{{ MAPS_NUMBER * MAX_MAP_POINTS }}</span>
 </div>
@@ -74,16 +81,18 @@ export default {
     secondsToGuess: 15,
     onOffSubmitBtn: false,
     showRetryBtn: false,
-    MAPS_NUMBER: 5,
+    MAPS_NUMBER: 30,
     MAX_MAP_POINTS: 2,
     nextText: 'Next ➡️',
     submitText: 'Submit ⬅️',
     startText: 'Start  ▶️',
     retryText: 'Retry ⏏️',
-    scoreText: 'Score: ',
-    rulesHeading: 'Game Rules:',
+    scoreText: '🏆 Score: ',
+    timeText: '🕓 Time left: ',
+    mapText: '🗺️ Map: ',
+    rulesHeading: '📃 Game Rules:',
     rulesText1: 'If you guess the map name you get 1 point',
-    rulesText2: 'If you guess artist and song name you get 2 points',
+    rulesText2: 'If you guess the map artist and map name you get 2 points',
     rulesText3: 'Enter map data like this: Artist - Song name OR artist-song name OR song name',
   }),
   methods: {
@@ -115,10 +124,14 @@ export default {
         if (this.secondsToGuess < 1) {
           clearInterval(timer);
           this.disableSubmitBtn();
+          this.isWrong = `❗️ It is ${this.mapName} - ${this.mapArtist}`;
         }
       }, 1000);
       document.getElementById('next-button').addEventListener('click', () => {
         clearInterval(timer);
+      });
+      document.getElementById('submit-button').addEventListener('click', () => {
+        clearTimeout(timer);
       });
     },
     resetGame() {
@@ -133,43 +146,47 @@ export default {
       this.setCurrentMap();
     },
     displayGame() {
-      document.querySelector('.max-w-lg').style.display = 'block';
+      document.querySelector('form').style.display = 'block';
       document.querySelector('input').focus();
       document.querySelector('#next-button').style.display = 'block';
       document.querySelector('#score-counter').style.display = 'block';
       document.querySelector('#seconds-counter').style.display = 'block';
+      document.querySelector('#map-info').style.display = 'block';
       document.getElementById('start-button').style.display = 'none';
       document.getElementById('description').style.display = 'none';
     },
     hideGame() {
-      document.querySelector('.max-w-lg').style.display = 'none';
+      document.querySelector('form').style.display = 'none';
       document.querySelector('#score-counter').style.display = 'none';
       document.querySelector('#next-button').style.display = 'none';
       document.querySelector('#seconds-counter').style.display = 'none';
     },
     displayScoreScreen() {
-      document.querySelector('#score-counter').style.display = 'none';
-      document.querySelector('.max-w-lg').style.display = 'none';
+      document.querySelector('form').style.display = 'none';
       document.querySelector('#next-button').style.display = 'none';
-      document.querySelector('#seconds-counter').style.display = 'none';
+      setTimeout(() => {
+        document.querySelector('#seconds-counter').style.display = 'none';
+        document.querySelector('#map-info').style.display = 'none';
+        document.querySelector('#score-counter').style.display = 'none';
+      }, 30);
       this.mapAudio = null;
       this.showRetryBtn = true;
-      this.isRight = `Scored: ${this.guessCounter}`;
+      this.isRight = `🎖 Scored: ${this.guessCounter}`;
     },
     enableSubmitBtn() {
       this.onOffSubmitBtn = false;
-      document.querySelector('#map-button').className = 'flex-shrink-0 bg-pink-500 hover:bg-pink-400 border-pink-500 hover:border-pink-400 text-sm border-4 text-white py-1 px-2 rounded';
+      document.querySelector('#submit-button').className = 'flex-shrink-0 bg-pink-500 hover:bg-pink-400 border-pink-500 hover:border-pink-400 text-sm border-4 text-white py-1 px-2 rounded';
       this.isWrong = '';
     },
     disableSubmitBtn() {
       this.onOffSubmitBtn = true;
-      document.querySelector('#map-button').className = 'flex-shrink-0 bg-gray-500 hover:bg-gray-400 border-gray-500 hover:border-gray-400 text-sm border-4 text-white py-1 px-2 rounded';
+      document.querySelector('#submit-button').className = 'flex-shrink-0 bg-gray-500 hover:bg-gray-400 border-gray-500 hover:border-gray-400 text-sm border-4 text-white py-1 px-2 rounded';
     },
     preventForm(e) {
       e.preventDefault();
     },
     submitForm() {
-      document.getElementById('map-button').click();
+      document.getElementById('submit-button').click();
     },
     clearInput() {
       this.isRight = '';
@@ -186,6 +203,6 @@ export default {
 
 <style scoped>
   #map-audio {
-    width: 640px;
+    width: 720px;
   }
 </style>
