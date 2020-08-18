@@ -11,7 +11,7 @@
   @click="getFiveMaps();setCurrentMap();displayGame();">
     {{ startText }}
   </button>
-    <div v-if="mapAudio" class="items-center" width="500">
+    <div v-if="mapAudio" class="flex justify-center">
   <audio id="map-audio" :src="mapAudio" controls></audio>
     </div>
     <form v-on:submit.prevent="preventForm" autocomplete="off">
@@ -124,7 +124,7 @@ export default {
         if (this.secondsToGuess < 1) {
           clearInterval(timer);
           this.disableSubmitBtn();
-          this.isWrong = `❗️ It is ${this.mapName} - ${this.mapArtist}`;
+          this.isWrong = `❗️ It is ${this.mapArtist} - ${this.mapName}`;
         }
       }, 1000);
       document.getElementById('next-button').addEventListener('click', () => {
@@ -203,6 +203,6 @@ export default {
 
 <style scoped>
   #map-audio {
-    width: 720px;
+    width: 100%;
   }
 </style>

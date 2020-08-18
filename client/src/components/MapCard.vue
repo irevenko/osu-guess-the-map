@@ -1,7 +1,7 @@
 <template>
-<div id="main">
+<div id="main" class="flex items-center flex-wrap">
    <div id="image-card"
-   class="inline w-64 mt-5 rounded overflow-hidden shadow-lg mx-auto container">
+   class="inline w-64 mt-5 rounded overflow-hidden shadow-lg">
   <img src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Ficons.iconarchive.com%2Ficons%2Ficonsmind%2Foutline%2F512%2FPhotos-icon.png&f=1&nofb=1"
   alt="Sunset in the mountains" width="340">
   <div class="px-6 py-4">
@@ -24,7 +24,7 @@
   </div>
 
   <div id="audio-card"
-  class="ml-10 inline w-64 mt-5 rounded overflow-hidden shadow-lg mx-auto container">
+  class="inline w-64 mt-5 rounded overflow-hidden shadow-lg">
   <img src="https://cdn2.iconfinder.com/data/icons/freecns-cumulus/16/519586-083_Music-512.png"
   alt="Sunset in the mountains" width="340">
   <div class="px-6 py-4">

@@ -118,7 +118,7 @@ export default {
         if (this.secondsToGuess < 1) {
           clearInterval(timer);
           this.disableSubmitBtn();
-          this.isWrong = `❗️ It is ${this.mapName} - ${this.mapArtist}`;
+          this.isWrong = `❗️ It is ${this.mapArtist} - ${this.mapName}`;
         }
       }, 1000);
       document.getElementById('next-button').addEventListener('click', () => {

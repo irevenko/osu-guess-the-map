@@ -1,7 +1,4 @@
-/* eslint-disable prefer-destructuring */
 /* eslint-disable consistent-return */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-else-return */
 import axios from 'axios';
 import _ from 'lodash';
 
@@ -15,28 +12,21 @@ async function getFiveMaps() {
   }
 }
 
-function processInputData(mapData) {
-  if (mapData.includes('-')) {
-    const rawInputData = mapData.toLowerCase().split('-');
-    const rawArtistGuess = rawInputData[0];
-    let artistGuess = rawArtistGuess.split(' ').filter((item) => item !== '');
-    artistGuess = artistGuess.map((m) => m.charAt(0).toUpperCase() + m.slice(1));
-    const validArtistGuess = artistGuess.toString().replace(new RegExp(',', 'g'), ' ').trim();
-    const rawNameGuess = rawInputData[1];
-    let nameGuess = rawNameGuess.split(' ').filter((item) => item !== '');
-    nameGuess = nameGuess.map((m) => m.charAt(0).toUpperCase() + m.slice(1));
-    const validNameGuess = nameGuess.toString().replace(new RegExp(',', 'g'), ' ').trim();
-    return `${validArtistGuess} - ${validNameGuess}`;
-  } else {
-    const rawNameGuess = mapData.toLowerCase().split(' ');
-    const nameGuess = rawNameGuess.map((m) => m.charAt(0).toUpperCase() + m.slice(1));
-    const validNameGuess = nameGuess.toString().replace(new RegExp(',', 'g'), ' ').trim();
-    return validNameGuess;
+function isValidMap(map) {
+  return map && map.toString().trim() !== '';
+}
+
+function hasMapName(inputData, mapName) {
+  if (inputData.toUpperCase().includes(mapName.toUpperCase())) {
+    return true;
   }
 }
 
-function isValidMap(map) {
-  return map && map.toString().trim() !== '';
+function hasMapNameAndArtist(inputData, mapName, mapArtist) {
+  if (inputData.toUpperCase().includes(mapName.toUpperCase())
+      && inputData.toUpperCase().includes(mapArtist.toUpperCase())) {
+    return true;
+  }
 }
 
 async function getMapInput() {
@@ -46,17 +36,18 @@ async function getMapInput() {
     const res = await axios.post('http://localhost:4000/api/post/submit', {
       map,
     });
-    if (isValidMap(res.data.map)) {
-      if (processInputData(res.data.map) === `${this.mapName}`) {
-        this.isWrong = '';
-        this.isRight = `✔️ Correct. It is ${this.mapArtist} - ${this.mapName}`;
-        this.guessCounter += 1;
-        this.pointsWon = '+1 point';
-      } else if (processInputData(res.data.map) === `${this.mapArtist} - ${this.mapName}`) {
+    const usersGuess = res.data.map;
+    if (isValidMap(usersGuess)) {
+      if (hasMapNameAndArtist(usersGuess, this.mapName, this.mapArtist)) {
         this.isWrong = '';
         this.isRight = `✔️ Correct. It is ${this.mapArtist} - ${this.mapName}`;
         this.guessCounter += 2;
         this.pointsWon = '+2 points';
+      } else if (hasMapName(usersGuess, this.mapName)) {
+        this.isWrong = '';
+        this.isRight = `✔️ Correct. It is ${this.mapArtist} - ${this.mapName}`;
+        this.guessCounter += 1;
+        this.pointsWon = '+1 point';
       } else {
         this.isWrong = `❌ Wrong. It is ${this.mapArtist} - ${this.mapName}`;
       }

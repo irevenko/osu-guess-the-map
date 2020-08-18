@@ -3,6 +3,9 @@
 
 # ToDo
 * Decompose ImageGame Component
-* Give 1 point if artist is wrong but name is correct
+* Customize player
 * Add more maps
-* New game modes (damaged or blured map image) (audio mode)
+* Leaderboard and register + login
+* Multiplayer
+* Seconds to guess Input change
+* New game modes (damaged or blured map image)
