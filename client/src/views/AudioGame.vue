@@ -5,6 +5,12 @@
     <div>{{ rulesText1 }}</div>
     <div>{{ rulesText2 }}</div>
     <div>{{ rulesText3 }}</div>
+    <p class="mt-2 text-pink-400">How many maps do you want?</p>
+    <input type="range" min="0" max="100" step="1" v-model="MAPS_NUMBER">
+    <span class="ml-2 text-pink-500" v-text="MAPS_NUMBER"></span>
+    <p class="mt-2 text-pink-400">How many seconds do you need?</p>
+    <input type="range" min="0" max="100" step="1" v-model="secondsValue">
+    <span class="ml-2 text-pink-500" v-text="secondsValue"></span>
   </div>
   <button id="start-button"
   class="mt-4 bg-pink-500 hover:bg-pink-300 text-white font-bold px-4 py-2 rounded"
@@ -78,10 +84,11 @@ export default {
     maps: [],
     mapIndex: 0,
     guessCounter: 0,
-    secondsToGuess: 15,
+    secondsToGuess: 0,
+    secondsValue: 15,
     onOffSubmitBtn: false,
     showRetryBtn: false,
-    MAPS_NUMBER: 30,
+    MAPS_NUMBER: 0,
     MAX_MAP_POINTS: 2,
     nextText: 'Next ➡️',
     submitText: 'Submit ⬅️',
@@ -105,7 +112,7 @@ export default {
         this.mapAudio = this.maps[this.mapIndex].audio;
         this.mapName = this.maps[this.mapIndex].name;
         this.mapArtist = this.maps[this.mapIndex].artist;
-        this.secondsToGuess = 15;
+        this.secondsToGuess = this.secondsValue;
         setTimeout(() => {
           document.getElementById('map-audio').play();
         }, 100);
@@ -114,7 +121,7 @@ export default {
       }, 200);
     },
     checkMapIndex() {
-      if (this.mapIndex === this.MAPS_NUMBER) {
+      if (this.mapIndex >= this.MAPS_NUMBER) {
         this.displayScoreScreen();
       }
     },

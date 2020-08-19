@@ -6,7 +6,8 @@ async function getFiveMaps() {
   try {
     const res = await axios.get('http://localhost:4000/api/get/all_maps');
     const shuffledMaps = _.shuffle(res.data);
-    this.maps = shuffledMaps;
+    const fiveMaps = shuffledMaps.slice(0, this.MAPS_NUMBER);
+    this.maps = fiveMaps;
   } catch (err) {
     return err;
   }
