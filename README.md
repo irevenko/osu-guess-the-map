@@ -2,8 +2,7 @@
 🎲🧩 
 
 # ToDo
-* Decompose ImageGame Component
-* Customize player
+* Customize audio player
 * Add more maps
 * Leaderboard and register + login
 * Multiplayer

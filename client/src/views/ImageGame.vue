@@ -5,15 +5,15 @@
     <div>{{ rulesText1 }}</div>
     <div>{{ rulesText2 }}</div>
     <div>{{ rulesText3 }}</div>
-    <p class="mt-2 text-pink-400">How many maps do you want?</p>
+    <p class="text-pink-400">How many maps do you want?</p>
     <input type="range" min="0" max="100" step="1" v-model="MAPS_NUMBER">
-    <span class="ml-2 text-pink-500" v-text="MAPS_NUMBER"></span>
-    <p class="mt-2 text-pink-400">How many seconds do you need?</p>
+    <div class="text-pink-500" v-text="MAPS_NUMBER"></div>
+    <p class="text-pink-400">How many seconds do you need?</p>
     <input type="range" min="0" max="100" step="1" v-model="secondsValue">
-    <span class="ml-2 text-pink-500" v-text="secondsValue"></span>
-    <p class="mt-2 text-pink-400">How hard do you want to blur the image?</p>
+    <div class="text-pink-500" v-text="secondsValue"></div>
+    <p class="text-pink-400">How hard do you want to blur the image?</p>
     <input type="range" min="0" max="100" step="1" v-model="blurValue">
-    <span class="ml-2 text-pink-500" v-text="blurValue"></span>
+    <div class="text-pink-500" v-text="blurValue"></div>
   </div>
   <button id="start-button"
   class="mt-4 bg-pink-500 hover:bg-pink-300 text-white font-bold px-4 py-2 rounded"
@@ -89,7 +89,7 @@ export default {
     blurValue: 0,
     onOffSubmitBtn: false,
     showRetryBtn: false,
-    MAPS_NUMBER: 0,
+    MAPS_NUMBER: 5,
     MAX_MAP_POINTS: 2,
     nextText: 'Next ➡️',
     submitText: 'Submit ⬅️',
