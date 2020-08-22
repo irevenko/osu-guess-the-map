@@ -15,7 +15,25 @@
   </div>
   <div class="w-full block flex-grow
   lg:flex lg:items-center lg:w-auto">
-    <div class="text-sm lg:flex-grow">
+  <div class="text-sm lg:flex-grow">
+    <router-link to="/leaderboard">
+      <a href="#responsive-header"
+      class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white mr-4">
+        🥇 Leaderboard
+      </a>
+      </router-link>
+          <router-link to="/register">
+      <a href="#responsive-header"
+      class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white mr-4">
+        🖊 Sign Up
+      </a>
+      </router-link>
+          <router-link to="/login">
+      <a href="#responsive-header"
+      class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white mr-4">
+       🖋 Sign In
+      </a>
+      </router-link>
     </div>
     <div>
       <button class="bg-pink-400 hover:bg-pink-300 text-white

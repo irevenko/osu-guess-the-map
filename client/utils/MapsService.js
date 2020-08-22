@@ -2,7 +2,7 @@
 import axios from 'axios';
 import _ from 'lodash';
 
-async function getFiveMaps() {
+async function getMaps() {
   try {
     const res = await axios.get('http://localhost:4000/api/get/all_maps');
     const shuffledMaps = _.shuffle(res.data);
@@ -64,5 +64,5 @@ async function getMapInput() {
 
 // eslint-disable-next-line import/prefer-default-export
 export {
-  getMapInput, getFiveMaps, isValidMap,
+  getMapInput, getMaps, isValidMap,
 };

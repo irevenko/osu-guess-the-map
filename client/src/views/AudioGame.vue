@@ -14,7 +14,7 @@
   </div>
   <button id="start-button"
   class="mt-4 bg-pink-500 hover:bg-pink-300 text-white font-bold px-4 py-2 rounded"
-  @click="getFiveMaps();setCurrentMap();displayGame();">
+  @click="getMaps();setCurrentMap();displayGame();">
     {{ startText }}
   </button>
     <div v-if="mapAudio" class="flex justify-center">
@@ -69,8 +69,8 @@
 
 <script>
 import {
-  getMapInput, getFiveMaps, isValidMap,
-} from '../../lib/MapsService';
+  getMapInput, getMaps, isValidMap,
+} from '../../utils/MapsService';
 
 export default {
   name: 'MapGenerator',
@@ -104,7 +104,7 @@ export default {
   }),
   methods: {
     getMapInput,
-    getFiveMaps,
+    getMaps,
     isValidMap,
     setCurrentMap() {
       document.querySelector('input').focus();
@@ -148,7 +148,7 @@ export default {
       this.mapIndex = 0;
       this.guessCounter = 0;
       this.maps = [];
-      this.getFiveMaps();
+      this.getMaps();
       this.displayGame();
       this.setCurrentMap();
     },

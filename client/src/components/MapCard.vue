@@ -9,9 +9,6 @@
     <p class="text-gray-700 text-base">
       Guess by image 📷
     </p>
-    <p class="text-gray-700 text-base">
-      Time limit is 15 seconds 🕑
-    </p>
   </div>
   <div class="px-6 py-4 mx-auto container">
     <router-link to="/image_game">
@@ -31,9 +28,6 @@
     <div class="font-bold text-xl mb-2">🎶 Audio Game</div>
     <p class="text-gray-700 text-base">
       Guess by audio 🎵
-    </p>
-    <p class="text-gray-700 text-base">
-      Time limit is 15 seconds 🕑
     </p>
   </div>
   <div class="px-6 py-4 mx-auto container">

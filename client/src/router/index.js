@@ -25,6 +25,27 @@ const routes = [
       return import('../views/AudioGame.vue');
     },
   },
+  {
+    path: '/login',
+    name: 'Login',
+    component() {
+      return import('../views/Login.vue');
+    },
+  },
+  {
+    path: '/register',
+    name: 'Registration',
+    component() {
+      return import('../views/Registration.vue');
+    },
+  },
+  {
+    path: '/leaderboard',
+    name: 'Leaderboard',
+    component() {
+      return import('../views/Leaderboard.vue');
+    },
+  },
 ];
 
 const router = new VueRouter({

@@ -17,7 +17,7 @@
   </div>
   <button id="start-button"
   class="mt-4 bg-pink-500 hover:bg-pink-300 text-white font-bold px-4 py-2 rounded"
-  @click="getFiveMaps();setCurrentMap();displayGame();">
+  @click="getMaps();setCurrentMap();displayGame();">
     {{ startText }}
   </button>
     <div v-if="mapImage">
@@ -69,8 +69,8 @@
 
 <script>
 import {
-  getMapInput, getFiveMaps, isValidMap,
-} from '../../lib/MapsService';
+  getMapInput, getMaps, isValidMap,
+} from '../../utils/MapsService';
 
 export default {
   name: 'MapGenerator',
@@ -101,11 +101,11 @@ export default {
     rulesHeading: '📃 Game Rules:',
     rulesText1: 'If you guess the map name you get 1 point',
     rulesText2: 'If you guess the map artist and map name you get 2 points',
-    rulesText3: 'Enter map data like this: Artist - Song name OR artist-song name OR song name',
+    rulesText3: 'Enter map data like this: Artist Song name OR artist-song name OR song name',
   }),
   methods: {
     getMapInput,
-    getFiveMaps,
+    getMaps,
     isValidMap,
     async setCurrentMap() {
       document.querySelector('input').focus();
@@ -149,7 +149,7 @@ export default {
       this.mapIndex = 0;
       this.guessCounter = 0;
       this.maps = [];
-      this.getFiveMaps();
+      this.getMaps();
       this.displayGame();
       this.setCurrentMap();
     },

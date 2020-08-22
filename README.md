@@ -2,7 +2,7 @@
 🎲🧩 
 
 # ToDo
-* Customize audio player
 * Add more maps
 * Leaderboard and register + login
 * Multiplayer
+* Customize audio player
