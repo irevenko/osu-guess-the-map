@@ -3,6 +3,6 @@
 
 # ToDo
 * Add more maps
-* Leaderboard and register + login
+* Leaderboard and register name
 * Multiplayer
 * Customize audio player
