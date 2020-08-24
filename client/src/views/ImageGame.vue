@@ -1,5 +1,20 @@
 <template>
 <div class="mt-5 text-center max-w-xl container mx-auto break-all">
+  <label for="user">
+  Choose the name to display in leaderboard. Otherwise it will be Anonymous
+  </label>
+<form class="w-full max-w-sm mx-auto container">
+  <div class="flex items-center border-b border-pink-500 py-2">
+    <input name="username" class="appearance-none bg-transparent border-none w-full
+    text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+    type="text" placeholder="Username">
+    <button class="flex-shrink-0 bg-pink-500 hover:bg-pink-700
+    border-pink-500 hover:border-pink-700 text-sm border-4 text-white
+    py-1 px-2 rounded" type="button" @click="getUsernameInput();">
+      Save
+    </button>
+  </div>
+</form>
   <div id="description" class="mt-16 text-base">
     <p class="text-2xl">{{ rulesHeading }}</p>
     <div>{{ rulesText1 }}</div>
@@ -23,7 +38,7 @@
     <div v-if="mapImage">
   <img id="map-img" :src="mapImage" alt="Responsive image" width="730">
     </div>
-    <form v-on:submit.prevent="preventForm" autocomplete="off">
+    <form id="map-form" v-on:submit.prevent="preventForm" autocomplete="off">
   <div
   class="flex items-center border-b border-b-2 border-pink-300 py-2">
     <input autofocus id="map-input" name="map" v-on:keyup.enter="submitForm"
@@ -69,12 +84,13 @@
 
 <script>
 import {
-  getMapInput, getMaps, isValidMap,
+  getMapInput, getMaps, isValidMap, getUsernameInput,
 } from '../../utils/MapsService';
 
 export default {
   name: 'MapGenerator',
   data: () => ({
+    user: 'Anonymous',
     mapImage: null,
     mapName: null,
     mapArtist: null,
@@ -106,6 +122,7 @@ export default {
   methods: {
     getMapInput,
     getMaps,
+    getUsernameInput,
     isValidMap,
     async setCurrentMap() {
       document.querySelector('input').focus();
@@ -154,7 +171,7 @@ export default {
       this.setCurrentMap();
     },
     displayGame() {
-      document.querySelector('form').style.display = 'block';
+      document.querySelector('#map-form').style.display = 'block';
       document.querySelector('input').focus();
       document.querySelector('#next-button').style.display = 'block';
       document.querySelector('#score-counter').style.display = 'block';
@@ -163,19 +180,19 @@ export default {
       document.getElementById('description').style.display = 'none';
     },
     hideGame() {
-      document.querySelector('form').style.display = 'none';
+      document.querySelector('#map-form').style.display = 'none';
       document.querySelector('#score-counter').style.display = 'none';
       document.querySelector('#next-button').style.display = 'none';
       document.querySelector('#seconds-counter').style.display = 'none';
     },
     displayScoreScreen() {
       document.querySelector('#score-counter').style.display = 'none';
-      document.querySelector('form').style.display = 'none';
+      document.querySelector('#map-form').style.display = 'none';
       document.querySelector('#next-button').style.display = 'none';
       document.querySelector('#seconds-counter').style.display = 'none';
       this.mapImage = null;
       this.showRetryBtn = true;
-      this.isRight = `🎖 Scored: ${this.guessCounter}`;
+      this.isRight = `🎖 ${this.user} Scored: ${this.guessCounter}`;
     },
     enableSubmitBtn() {
       this.onOffSubmitBtn = false;

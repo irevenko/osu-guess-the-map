@@ -62,14 +62,11 @@ async function getMapInput() {
   }
 }
 
-async function getUsernameInput() {
+function getUsernameInput() {
   const formData = new FormData(document.querySelector('form'));
   const userName = formData.get('username');
   try {
-    const res = await axios.post('http://localhost:4000/api/post/submit', {
-      userName,
-    });
-    console.log(res.data);
+    this.user = userName;
   } catch (err) {
     return err;
   }
