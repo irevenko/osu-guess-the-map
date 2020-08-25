@@ -22,12 +22,6 @@
         🥇 Leaderboard
       </a>
       </router-link>
-          <router-link to="/register">
-      <a href="#responsive-header"
-      class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white mr-4">
-        🖊 Sign Up
-      </a>
-      </router-link>
     </div>
     <div>
       <button class="bg-pink-400 hover:bg-pink-300 text-white

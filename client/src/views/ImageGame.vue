@@ -1,7 +1,13 @@
 <template>
-<div class="mt-5 text-center max-w-xl container mx-auto break-all">
-  <label for="user">
-  Choose the name to display in leaderboard. Otherwise it will be Anonymous
+<div class="text-center max-w-xl container mx-auto break-all">
+  <div id="description" class="mt-4 text-base">
+    <p class="text-2xl">{{ rulesHeading }}</p>
+    <div>{{ rulesText1 }}</div>
+    <div>{{ rulesText2 }}</div>
+    <div>{{ rulesText3 }}</div>
+    <div class="mb-4">{{ rulesText4 }}</div>
+      <label for="user">
+  {{nameInfo}}
   </label>
 <form class="w-full max-w-sm mx-auto container">
   <div class="flex items-center border-b border-pink-500 py-2">
@@ -14,24 +20,22 @@
       Save
     </button>
   </div>
+  <div>Current name: <span class="text-pink-500">{{ user }}</span></div>
+  <div>{{ wrongUserInput }}</div>
+  <div class="text-2xl mt-2">🛠 Settings:</div>
 </form>
-  <div id="description" class="mt-16 text-base">
-    <p class="text-2xl">{{ rulesHeading }}</p>
-    <div>{{ rulesText1 }}</div>
-    <div>{{ rulesText2 }}</div>
-    <div>{{ rulesText3 }}</div>
-    <p class="text-pink-400">How many maps do you want?</p>
+    <p class="mt-6">How many maps do you want?</p>
     <input type="range" min="0" max="100" step="1" v-model="MAPS_NUMBER">
     <div class="text-pink-500" v-text="MAPS_NUMBER"></div>
-    <p class="text-pink-400">How many seconds do you need?</p>
+    <p>How many seconds do you need?</p>
     <input type="range" min="0" max="100" step="1" v-model="secondsValue">
     <div class="text-pink-500" v-text="secondsValue"></div>
-    <p class="text-pink-400">How hard do you want to blur the image?</p>
+    <p>How hard do you want to blur the image?</p>
     <input type="range" min="0" max="100" step="1" v-model="blurValue">
     <div class="text-pink-500" v-text="blurValue"></div>
   </div>
   <button id="start-button"
-  class="mt-4 bg-pink-500 hover:bg-pink-300 text-white font-bold px-4 py-2 rounded"
+  class="mt-4 mb-10 bg-pink-500 hover:bg-pink-300 text-white font-bold px-4 py-2 rounded"
   @click="getMaps();setCurrentMap();displayGame();">
     {{ startText }}
   </button>
@@ -91,6 +95,7 @@ export default {
   name: 'MapGenerator',
   data: () => ({
     user: 'Anonymous',
+    wrongUserInput: null,
     mapImage: null,
     mapName: null,
     mapArtist: null,
@@ -115,9 +120,11 @@ export default {
     timeText: '🕓 Time left: ',
     mapText: '🗺️ Map: ',
     rulesHeading: '📃 Game Rules:',
+    nameInfo: 'Choose the name to display in leaderboard. Otherwise it will be Anonymous',
     rulesText1: 'If you guess the map name you get 1 point',
     rulesText2: 'If you guess the map artist and map name you get 2 points',
-    rulesText3: 'Enter map data like this: Artist Song name OR artist-song name OR song name',
+    rulesText3: 'Enter map how you want but it must include Name or Artist or Both in any Case',
+    rulesText4: 'For instance: reol no title, NO TITLE REOL, Reol - No Title, no title, No TiTLe',
   }),
   methods: {
     getMapInput,
@@ -192,7 +199,7 @@ export default {
       document.querySelector('#seconds-counter').style.display = 'none';
       this.mapImage = null;
       this.showRetryBtn = true;
-      this.isRight = `🎖 ${this.user} Scored: ${this.guessCounter}`;
+      this.isRight = `👤 ${this.user} 🎖 Has scored: ${this.guessCounter}`;
     },
     enableSubmitBtn() {
       this.onOffSubmitBtn = false;

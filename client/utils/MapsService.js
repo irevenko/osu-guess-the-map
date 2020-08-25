@@ -31,13 +31,9 @@ function hasMapNameAndArtist(inputData, mapName, mapArtist) {
 }
 
 async function getMapInput() {
-  const formData = new FormData(document.querySelector('form'));
-  const map = formData.get('map');
+  const formData = new FormData(document.querySelector('#map-form'));
+  const usersGuess = formData.get('map');
   try {
-    const res = await axios.post('http://localhost:4000/api/post/submit', {
-      map,
-    });
-    const usersGuess = res.data.map;
     if (isValidMap(usersGuess)) {
       if (hasMapNameAndArtist(usersGuess, this.mapName, this.mapArtist)) {
         this.isWrong = '';
@@ -66,7 +62,11 @@ function getUsernameInput() {
   const formData = new FormData(document.querySelector('form'));
   const userName = formData.get('username');
   try {
-    this.user = userName;
+    if (isValidMap(userName)) {
+      this.user = userName;
+    } else {
+      this.wrongUserInput = '⛔️ Input data is not valid! Try again 🔄.';
+    }
   } catch (err) {
     return err;
   }

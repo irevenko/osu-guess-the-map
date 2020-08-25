@@ -1,11 +1,5 @@
 <template>
 <div>
-  <p class="text-xl text-center mt-3">
-    If you want to be displayed here -
-    <router-link to="/register" class="text-pink-500">
-    Register your Username
-    </router-link>
-    </p>
   <table class="table-fixed container mx-auto mt-1">
   <thead>
     <tr>
