@@ -25,13 +25,6 @@ router.get('/api/get/all_maps', async (req, res) => {
   res.send(await maps.find({}).toArray());
 });
 
-router.get('/api/get/random_map', async (req, res) => {
-  const maps = await loadMaps();
-  const map = await maps.find({}).toArray();
-  const rand = Math.floor((Math.random() * 6) + 0);
-  res.send(map[rand]);
-});
-
 router.post('/api/post/submit', async (req, res) => {
   res.send(req.body);
 });

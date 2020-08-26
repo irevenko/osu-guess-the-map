@@ -3,6 +3,7 @@
 
 # ToDo
 * Add more maps
-* Leaderboard and register name
+* Add name to Audio Comp, try Local Storage
+* Leaderboard
 * Multiplayer
 * Customize audio player
