@@ -16,7 +16,7 @@
           type="text" placeholder="Username" v-model="user">
       </div>
       <div>{{ nameText }}<span class="text-pink-500">{{ user }}</span></div>
-      <div class="text-red-500">{{ userMsg }}</div>
+      <div class="text-red-500">{{ userErr }}</div>
       <div class="text-2xl mt-5">{{ settingsText }}</div>
     </form>
     <p class="mt-6">{{ howText1 }}</p>
@@ -90,7 +90,7 @@ export default {
   name: 'MapGenerator',
   data: () => ({
     user: 'Anonymous',
-    userMsg: null,
+    userErr: null,
     mapImage: null,
     mapName: null,
     mapArtist: null,
@@ -224,11 +224,11 @@ export default {
     },
     validateUser(value) {
       if (value.trim() === '') {
-        this.userMsg = '❗️ Please choose a name';
+        this.userErr = '❗️ Please choose a name';
         document.getElementById('start-button').disabled = true;
         document.querySelector('#start-button').className = 'flex-shrink-0 bg-gray-500 hover:bg-gray-400 border-gray-500 hover:border-gray-400 text-sm border-4 text-white py-1 px-2 rounded';
       } else {
-        this.userMsg = '';
+        this.userErr = '';
         document.getElementById('start-button').disabled = false;
         document.querySelector('#start-button').className = 'flex-shrink-0 bg-pink-500 hover:bg-pink-400 border-pink-500 hover:border-pink-400 text-sm border-4 text-white py-1 px-2 rounded';
       }

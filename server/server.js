@@ -25,8 +25,4 @@ router.get('/api/get/all_maps', async (req, res) => {
   res.send(await maps.find({}).toArray());
 });
 
-router.post('/api/post/submit', async (req, res) => {
-  res.send(req.body);
-});
-
 app.listen(PORT, () => console.log(`Server is listening at port: ${PORT}`));
