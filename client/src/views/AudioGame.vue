@@ -79,9 +79,7 @@
 </template>
 
 <script>
-import {
-  getMapInput, getMaps, isValidMap,
-} from '../../utils/MapsService';
+import getMaps from '../../utils/MapsService';
 
 export default {
   name: 'MapGenerator',
@@ -122,9 +120,7 @@ export default {
     rulesText4: 'For instance: reol no title, NO TITLE REOL, Reol - No Title, no title, No TiTLe',
   }),
   methods: {
-    getMapInput,
     getMaps,
-    isValidMap,
     setCurrentMap() {
       document.querySelector('input').focus();
       setTimeout(() => {
@@ -159,6 +155,60 @@ export default {
       document.getElementById('submit-button').addEventListener('click', () => {
         clearTimeout(timer);
       });
+    },
+    isValidMap(map) {
+      return map && map.toString().trim() !== '';
+    },
+    hasMapName(inputData, mapName) {
+      if (inputData.toUpperCase().includes(mapName.toUpperCase())) {
+        return true;
+      }
+    },
+    hasMapNameAndArtist(inputData, mapName, mapArtist) {
+      if (inputData.toUpperCase().includes(mapName.toUpperCase())
+        && inputData.toUpperCase().includes(mapArtist.toUpperCase())) {
+        return true;
+      }
+    },
+    async getMapInput() {
+      const formData = new FormData(document.querySelector('#map-form'));
+      const usersGuess = formData.get('map');
+      try {
+        if (this.isValidMap(usersGuess)) {
+          if (this.hasMapNameAndArtist(usersGuess, this.mapName, this.mapArtist)) {
+            this.isWrong = '';
+            this.isRight = `✔️ Correct. It is ${this.mapArtist} - ${this.mapName}`;
+            this.guessCounter += 2;
+            this.pointsWon = '+2 points';
+          } else if (this.hasMapName(usersGuess, this.mapName)) {
+            this.isWrong = '';
+            this.isRight = `✔️ Correct. It is ${this.mapArtist} - ${this.mapName}`;
+            this.guessCounter += 1;
+            this.pointsWon = '+1 point';
+          } else {
+            this.isWrong = `❌ Wrong. It is ${this.mapArtist} - ${this.mapName}`;
+          }
+        } else {
+          this.isWrong = '⛔️ Input data is not valid! Try again 🔄.';
+          document.querySelector('#submit-button').className = 'flex-shrink-0 bg-pink-500 hover:bg-pink-400 border-pink-500 hover:border-pink-400 text-sm border-4 text-white py-1 px-2 rounded';
+          this.onOffSubmitBtn = false;
+        }
+      } catch (err) {
+        return err;
+      }
+    },
+    getUsernameInput() {
+      const formData = new FormData(document.querySelector('form'));
+      const userName = formData.get('username');
+      try {
+        if (this.isValidMap(userName)) {
+          this.user = userName;
+        } else {
+          this.wrongUserInput = '⛔️ Input data is not valid! Try again 🔄.';
+        }
+      } catch (err) {
+        return err;
+      }
     },
     resetGame() {
       this.showRetryBtn = false;
