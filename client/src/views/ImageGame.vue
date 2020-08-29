@@ -47,7 +47,7 @@
       <button id="submit-button" :disabled=onOffSubmitBtn
         class="flex-shrink-0 bg-pink-500 hover:bg-pink-400 border-pink-500
         hover:border-pink-400 text-sm border-4 text-white py-1 px-2 rounded"
-        type="button" @click="getMapInput();disableSubmitBtn();">
+        type="button" @click="getMapInput();">
       {{ submitText }}
       </button>
     </div>
@@ -71,6 +71,10 @@
     @click="clearInput();checkMapIndex();setCurrentMap();enableSubmitBtn();">
   {{ nextText }}
   </button>
+  <div id="score-screen" class="mt-10 text-lg">
+    <p class="mb-1 text-pink-500">👤 {{user}}</p>
+    <p>🎖 Has scored: <span class="text-pink-500">{{guessCounter}}</span> points</p>
+  </div>
   <div v-if="showRetryBtn">
     <button id="retry-button"
       class="mx-auto mt-5 bg-pink-500 hover:bg-pink-400 text-white font-bold px-4 py-2 rounded"
@@ -83,6 +87,7 @@
 
 <script>
 import getMaps from '../../utils/MapsService';
+/* eslint-disable consistent-return */
 
 export default {
   name: 'MapGenerator',
@@ -158,7 +163,9 @@ export default {
         clearInterval(timer);
       });
       document.getElementById('submit-button').addEventListener('click', () => {
-        clearTimeout(timer);
+        if (this.isRight || this.isWrong.includes('Wrong')) {
+          clearTimeout(timer);
+        }
       });
     },
     isValidMap(map) {
@@ -175,7 +182,7 @@ export default {
         return true;
       }
     },
-    async getMapInput() {
+    getMapInput() {
       const formData = new FormData(document.querySelector('#map-form'));
       const usersGuess = formData.get('map');
       try {
@@ -185,18 +192,19 @@ export default {
             this.isRight = `✔️ Correct. It is ${this.mapArtist} - ${this.mapName}`;
             this.guessCounter += 2;
             this.pointsWon = '+2 points';
+            this.disableSubmitBtn();
           } else if (this.hasMapName(usersGuess, this.mapName)) {
             this.isWrong = '';
             this.isRight = `✔️ Correct. It is ${this.mapArtist} - ${this.mapName}`;
             this.guessCounter += 1;
             this.pointsWon = '+1 point';
+            this.disableSubmitBtn();
           } else {
             this.isWrong = `❌ Wrong. It is ${this.mapArtist} - ${this.mapName}`;
+            this.disableSubmitBtn();
           }
         } else {
           this.isWrong = '⛔️ Input data is not valid! Try again 🔄.';
-          document.querySelector('#submit-button').className = 'flex-shrink-0 bg-pink-500 hover:bg-pink-400 border-pink-500 hover:border-pink-400 text-sm border-4 text-white py-1 px-2 rounded';
-          this.onOffSubmitBtn = false;
         }
       } catch (err) {
         return err;
@@ -216,6 +224,7 @@ export default {
       }
     },
     resetGame() {
+      document.querySelector('#score-screen').style.display = 'none';
       this.showRetryBtn = false;
       this.isRight = '';
       this.pointsWon = '';
@@ -240,6 +249,7 @@ export default {
       document.querySelector('#score-counter').style.display = 'none';
       document.querySelector('#next-button').style.display = 'none';
       document.querySelector('#seconds-counter').style.display = 'none';
+      document.querySelector('#score-screen').style.display = 'none';
     },
     displayScoreScreen() {
       document.querySelector('#score-counter').style.display = 'none';
@@ -248,7 +258,7 @@ export default {
       document.querySelector('#seconds-counter').style.display = 'none';
       this.mapImage = null;
       this.showRetryBtn = true;
-      this.isRight = `👤 ${this.user} 🎖 Has scored: ${this.guessCounter}`;
+      document.querySelector('#score-screen').style.display = 'block';
     },
     enableSubmitBtn() {
       this.onOffSubmitBtn = false;

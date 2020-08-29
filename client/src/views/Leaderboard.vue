@@ -5,7 +5,7 @@
     <tr>
       <th class="w-1/2 px-4 py-2">Username</th>
       <th class="w-1/4 px-4 py-2">Score</th>
-      <th class="w-1/4 px-4 py-2">...</th>
+      <th class="w-1/4 px-4 py-2">Date</th>
     </tr>
   </thead>
   <tbody>
