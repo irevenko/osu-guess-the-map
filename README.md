@@ -2,7 +2,7 @@
 🎲🧩 
 
 # ToDo
-* Move funcs to Service
+* Prevent 0 maps choice
 * Add more maps
 * Leaderboard
 * Multiplayer

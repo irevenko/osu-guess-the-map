@@ -6,22 +6,23 @@
     <div>{{ rulesText2 }}</div>
     <div>{{ rulesText3 }}</div>
     <div class="mb-4">{{ rulesText4 }}</div>
-    <label for="user">
+    <label for="username">
     {{ nameInfo }}
     </label>
     <form class="w-full max-w-sm mx-auto container">
       <div class="flex items-center border-b border-pink-500 py-2">
         <input name="username" class="appearance-none bg-transparent border-none w-full
           text-gray-700 mr-3 mt-1 py-1 px-2 leading-tight focus:outline-none"
-          type="text" placeholder="Username" v-model="user">
+          type="text" placeholder="Username" v-model="userName">
       </div>
-      <div>{{ nameText }}<span class="text-pink-500">{{ user }}</span></div>
+      <div>{{ nameText }}<span class="text-pink-500">{{ userName }}</span></div>
       <div class="text-red-500">{{ userErr }}</div>
       <div class="text-2xl mt-5">{{ settingsText }}</div>
     </form>
     <p class="mt-6">{{ howText1 }}</p>
-    <input type="range" min="0" max="100" step="1" v-model="MAPS_NUMBER">
-    <div class="text-pink-500 text-xl" v-text="MAPS_NUMBER"></div>
+    <div class="text-red-500">{{ mapErr }}</div>
+    <input type="range" min="0" max="100" step="1" v-model="mapsNumber">
+    <div class="text-pink-500 text-xl" v-text="mapsNumber"></div>
     <p>{{ howText2 }}</p>
     <input type="range" min="0" max="100" step="1" v-model="secondsValue">
     <div class="text-pink-500 text-xl" v-text="secondsValue"></div>
@@ -58,10 +59,10 @@
   <div id="score-counter">
     <div id="map-info">
       <span>{{ mapText }}</span>
-      <span class="text-pink-500"> {{ mapIndex }}/{{ MAPS_NUMBER }}</span>
+      <span class="text-pink-500"> {{ mapIndex }}/{{ mapsNumber }}</span>
     </div>
     <span>{{ scoreText }}</span>
-    <span class="text-pink-500"> {{ guessCounter }}/{{ MAPS_NUMBER * MAX_MAP_POINTS }}</span>
+    <span class="text-pink-500"> {{ guessCounter }}/{{ mapsNumber * MAX_MAP_POINTS }}</span>
   </div>
   <button id="next-button"
     class="mx-auto mt-5 bg-pink-500 hover:bg-pink-400 text-white font-bold px-4 py-2 rounded"
@@ -69,9 +70,13 @@
   {{ nextText }}
   </button>
   <div id="score-screen" class="mt-10 text-lg">
-    <p class="mb-1 text-pink-500">👤 {{user}}</p>
-    <p id="final">🎖 Has scored: <span class="text-pink-500">{{guessCounter}}</span> points</p>
-  <button @click="submitLb();">saas</button>
+    <p class="mb-1 text-pink-500">👤 {{ userName }}</p>
+    <p>🎖 Has scored: <span class="text-pink-500">{{ guessCounter }}</span> points</p>
+  <button @click="submitScore();disableLeaderboardBtn();"
+  class="mt-4 mb-3 flex-shrink-0 bg-pink-500
+  hover:bg-pink-400 border-pink-500 hover:border-pink-400
+  text-sm border-4 text-white py-1 px-2 rounded" id="leaderboard-button">
+  Save score to the leaderboard🥇 🥈 🥉 </button>
   </div>
   <div v-if="showRetryBtn">
     <button id="retry-button"
@@ -84,15 +89,15 @@
 </template>
 
 <script>
-import axios from 'axios';
-import _ from 'lodash';
+import { submitScore, getMaps } from '../../utils/MapsService';
 /* eslint-disable consistent-return */
 
 export default {
   name: 'MapGenerator',
   data: () => ({
-    user: 'Anonymous',
+    userName: 'Anonymous',
     userErr: null,
+    mapErr: null,
     mapAudio: null,
     mapName: null,
     mapArtist: null,
@@ -106,7 +111,7 @@ export default {
     secondsValue: 15,
     onOffSubmitBtn: false,
     showRetryBtn: false,
-    MAPS_NUMBER: 5,
+    mapsNumber: 5,
     MAX_MAP_POINTS: 2,
     nextText: 'Next ➡️',
     submitText: 'Submit ⬅️',
@@ -123,32 +128,12 @@ export default {
     nameInfo: 'Choose the name to display in leaderboard. Otherwise it will be Anonymous',
     rulesText1: 'If you guess the map name you get 1 point',
     rulesText2: 'If you guess the map artist and map name you get 2 points',
-    rulesText3: 'Enter map data like this: Artist - Song name OR artist-song name OR song name',
+    rulesText3: 'Enter map how you want but it must include Name or Artist or Both in any Case',
     rulesText4: 'For instance: reol no title, NO TITLE REOL, Reol - No Title, no title, No TiTLe',
   }),
   methods: {
-    async submitLb() {
-      try {
-        const data = document.getElementById('final').textContent;
-        console.log(data);
-        const res = await axios.post('http://localhost:4000/api/post/submit_lb', {
-          data,
-        });
-        console.log(res.data);
-      } catch (err) {
-        return err;
-      }
-    },
-    async getMaps() {
-      try {
-        const res = await axios.get('http://localhost:4000/api/get/all_maps');
-        const shuffledMaps = _.shuffle(res.data);
-        const someMaps = shuffledMaps.slice(0, this.MAPS_NUMBER);
-        this.maps = someMaps;
-      } catch (err) {
-        return err;
-      }
-    },
+    getMaps,
+    submitScore,
     setCurrentMap() {
       document.querySelector('input').focus();
       setTimeout(() => {
@@ -158,13 +143,13 @@ export default {
         this.secondsToGuess = this.secondsValue;
         setTimeout(() => {
           document.getElementById('map-audio').play();
-        }, 100);
+        }, 50);
         this.launchTimer();
         this.mapIndex += 1;
-      }, 200);
+      }, 100);
     },
     checkMapIndex() {
-      if (this.mapIndex >= this.MAPS_NUMBER) {
+      if (this.mapIndex === this.mapsNumber) {
         this.displayScoreScreen();
       }
     },
@@ -186,7 +171,7 @@ export default {
         }
       });
     },
-    isValidMap(map) {
+    isValidInput(map) {
       return map && map.toString().trim() !== '';
     },
     hasMapName(inputData, mapName) {
@@ -204,7 +189,7 @@ export default {
       const formData = new FormData(document.querySelector('#map-form'));
       const usersGuess = formData.get('map');
       try {
-        if (this.isValidMap(usersGuess)) {
+        if (this.isValidInput(usersGuess)) {
           if (this.hasMapNameAndArtist(usersGuess, this.mapName, this.mapArtist)) {
             this.isWrong = '';
             this.isRight = `✔️ Correct. It is ${this.mapArtist} - ${this.mapName}`;
@@ -230,10 +215,10 @@ export default {
     },
     getUsernameInput() {
       const formData = new FormData(document.querySelector('form'));
-      const userName = formData.get('username');
+      const user = formData.get('username');
       try {
-        if (this.isValidMap(userName)) {
-          this.user = userName;
+        if (this.isValidInput(user)) {
+          this.userName = user;
         } else {
           this.wrongUserInput = '⛔️ Input data is not valid! Try again 🔄.';
         }
@@ -291,6 +276,10 @@ export default {
       this.onOffSubmitBtn = true;
       document.querySelector('#submit-button').className = 'flex-shrink-0 bg-gray-500 hover:bg-gray-400 border-gray-500 hover:border-gray-400 text-sm border-4 text-white py-1 px-2 rounded';
     },
+    disableLeaderboardBtn() {
+      document.getElementById('leaderboard-button').disabled = true;
+      document.getElementById('leaderboard-button').className = 'mt-4 mb-3 flex-shrink-0 bg-gray-500 hover:bg-gray-400 border-gray-500 hover:border-gray-400 text-sm border-4 text-white py-1 px-2 rounded';
+    },
     preventForm(e) {
       e.preventDefault();
     },
@@ -314,11 +303,26 @@ export default {
         document.querySelector('#start-button').className = 'flex-shrink-0 bg-pink-500 hover:bg-pink-400 border-pink-500 hover:border-pink-400 text-sm border-4 text-white py-1 px-2 rounded';
       }
     },
+    validateMapsNumber(value) {
+      if (value === '0') {
+        this.mapErr = '❗️ Choose at least 1 map';
+        document.getElementById('start-button').disabled = true;
+        document.querySelector('#start-button').className = 'flex-shrink-0 bg-gray-500 hover:bg-gray-400 border-gray-500 hover:border-gray-400 text-sm border-4 text-white py-1 px-2 rounded';
+      } else {
+        this.mapErr = '';
+        document.getElementById('start-button').disabled = false;
+        document.querySelector('#start-button').className = 'flex-shrink-0 bg-pink-500 hover:bg-pink-400 border-pink-500 hover:border-pink-400 text-sm border-4 text-white py-1 px-2 rounded';
+      }
+    },
   },
   watch: {
-    user(value) {
-      this.user = value;
+    userName(value) {
+      this.userName = value;
       this.validateUser(value);
+    },
+    mapsNumber(value) {
+      this.mapsNumber = value;
+      this.validateMapsNumber(value);
     },
   },
   mounted() {
