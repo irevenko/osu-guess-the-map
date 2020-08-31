@@ -158,7 +158,7 @@ export default {
         setTimeout(() => {
           document.getElementById('map-img').style.setProperty('filter', `blur(${this.blurValue}px)`);
         }, 20);
-      }, 1100);
+      }, 1900);
     },
     checkMapIndex() {
       if (this.mapIndex >= this.mapsNumber) {
