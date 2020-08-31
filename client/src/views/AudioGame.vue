@@ -26,10 +26,13 @@
     <p>{{ howText2 }}</p>
     <input type="range" min="0" max="100" step="1" v-model="secondsValue">
     <div class="text-pink-500 text-xl" v-text="secondsValue"></div>
+    <p>{{ howText3 }}</p>
+    <input type="range" min="0.50" max="3.05" step="0.10" v-model="speedValue">
+    <div class="text-pink-500 text-xl" v-text="speedValue"></div>
   </div>
   <button id="start-button"
     class="mt-4 mb-10 bg-pink-500 hover:bg-pink-300 text-white font-bold px-4 py-2 rounded"
-    @click="getMaps();setCurrentMap();displayGame();">
+    @click="getMaps();setCurrentMap(2000);displayGame();">
   {{ startText }}
   </button>
     <div class="mt-3 text-xl">{{ loadingText }}</div>
@@ -67,7 +70,7 @@
   </div>
   <button id="next-button"
     class="mx-auto mt-5 bg-pink-500 hover:bg-pink-400 text-white font-bold px-4 py-2 rounded"
-    @click="clearInput();checkMapIndex();setCurrentMap();enableSubmitBtn();">
+    @click="clearInput();checkMapIndex();setCurrentMap(250);enableSubmitBtn();">
   {{ nextText }}
   </button>
   <div id="score-screen" class="mt-10 text-lg">
@@ -110,6 +113,7 @@ export default {
     guessCounter: 0,
     secondsToGuess: 0,
     secondsValue: 15,
+    speedValue: 1,
     onOffSubmitBtn: false,
     showRetryBtn: false,
     mapsNumber: 5,
@@ -131,6 +135,7 @@ export default {
     leaderboardBtn: 'Save score to the leaderboard🥇 🥈 🥉',
     howText1: 'How many maps do you want?',
     howText2: 'How many seconds do you need?',
+    howText3: 'How fast do you want song to play?',
     nameInfo: 'Choose the name to display in leaderboard. Otherwise it will be Anonymous',
     rulesText1: 'If you guess the map name you get 1 point',
     rulesText2: 'If you guess the map artist and map name you get 2 points',
@@ -140,7 +145,7 @@ export default {
   methods: {
     getMaps,
     submitScore,
-    setCurrentMap() {
+    setCurrentMap(delayTime) {
       document.querySelector('input').focus();
       setTimeout(() => {
         this.mapAudio = this.maps[this.mapIndex].audio;
@@ -150,11 +155,12 @@ export default {
         this.secondsToGuess = this.secondsValue;
         setTimeout(() => {
           document.getElementById('map-audio').volume = 0.4;
+          document.getElementById('map-audio').playbackRate = this.speedValue;
           document.getElementById('map-audio').play();
         }, 30);
         this.launchTimer();
         this.mapIndex += 1;
-      }, 1900);
+      }, delayTime);
     },
     checkMapIndex() {
       if (this.mapIndex >= this.mapsNumber) {
@@ -244,7 +250,7 @@ export default {
       this.maps = [];
       this.getMaps();
       this.displayGame();
-      this.setCurrentMap();
+      this.setCurrentMap(2000);
     },
     displayGame() {
       this.loadingText = 'Loading...';

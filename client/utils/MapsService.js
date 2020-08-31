@@ -38,4 +38,6 @@ async function submitScore() {
   }
 }
 
-export { getMaps, submitScore, getScores };
+export {
+  getMaps, submitScore, getScores,
+};

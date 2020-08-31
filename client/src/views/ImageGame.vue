@@ -32,7 +32,7 @@
   </div>
   <button id="start-button"
     class="mt-4 mb-10 bg-pink-500 hover:bg-pink-300 text-white font-bold px-4 py-2 rounded"
-    @click="getMaps();setCurrentMap();displayGame();">
+    @click="getMaps();setCurrentMap(2000);displayGame();">
   {{ startText }}
   </button>
   <div class="mt-3 text-xl">{{ loadingText }}</div>
@@ -70,7 +70,7 @@
   </div>
   <button id="next-button"
     class="mx-auto mt-5 bg-pink-500 hover:bg-pink-400 text-white font-bold px-4 py-2 rounded"
-    @click="clearInput();checkMapIndex();setCurrentMap();enableSubmitBtn();">
+    @click="clearInput();checkMapIndex();setCurrentMap(250);enableSubmitBtn();">
   {{ nextText }}
   </button>
   <div id="score-screen" class="mt-10 text-lg">
@@ -145,7 +145,7 @@ export default {
   methods: {
     getMaps,
     submitScore,
-    setCurrentMap() {
+    setCurrentMap(delayTime) {
       document.querySelector('input').focus();
       setTimeout(() => {
         this.mapImage = this.maps[this.mapIndex].image;
@@ -153,12 +153,12 @@ export default {
         this.mapName = this.maps[this.mapIndex].name;
         this.mapArtist = this.maps[this.mapIndex].artist;
         this.secondsToGuess = this.secondsValue;
-        this.launchTimer();
-        this.mapIndex += 1;
         setTimeout(() => {
           document.getElementById('map-img').style.setProperty('filter', `blur(${this.blurValue}px)`);
         }, 20);
-      }, 1900);
+        this.launchTimer();
+        this.mapIndex += 1;
+      }, delayTime);
     },
     checkMapIndex() {
       if (this.mapIndex >= this.mapsNumber) {
@@ -248,7 +248,7 @@ export default {
       this.maps = [];
       this.getMaps();
       this.displayGame();
-      this.setCurrentMap();
+      this.setCurrentMap(2000);
     },
     displayGame() {
       this.loadingText = 'Loading...';

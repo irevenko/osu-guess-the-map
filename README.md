@@ -26,11 +26,8 @@ MEVN Stack
 * Vue
 
 # ToDo
-* Add more maps
 * Multiplayer
 * Customize audio player
-* Deploy vue app to heroku
-* Deploy node app to heroku
 
 # License 📑 
 (c) 2020 Ilya Revenko. [MIT License](https://tldrlegal.com/license/mit-license)
