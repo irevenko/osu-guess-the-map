@@ -1,6 +1,5 @@
 <template>
 <div class="text-center max-w-xl container mx-auto break-all">
-  <div>{{mapIndex}} {{mapsNumber}}</div>
   <div id="description" class="mt-4 text-base">
     <p class="text-2xl">{{ rulesHeading }}</p>
     <div class="mt-2">{{ rulesText1 }}</div>
@@ -36,8 +35,9 @@
     @click="getMaps();setCurrentMap();displayGame();">
   {{ startText }}
   </button>
+  <div class="mt-3 text-xl">{{ loadingText }}</div>
   <div v-if="mapImage">
-    <img id="map-img" :src="mapImage" alt="Responsive image" width="730" class="mt-5">
+    <img id="map-img" :src="mapImage" alt="map image" width="730" class="mt-5">
   </div>
   <form id="map-form" v-on:submit.prevent="preventForm" autocomplete="off">
     <div
@@ -74,13 +74,13 @@
   {{ nextText }}
   </button>
   <div id="score-screen" class="mt-10 text-lg">
-    <p class="mb-1 text-pink-500">👤 {{ userName }}</p>
-    <p>🎖 Has scored: <span class="text-pink-500">{{ guessCounter }}</span> points</p>
+    <p class="mb-1 text-pink-500">{{ userEmoji }} {{ userName }}</p>
+    <p>{{ hasScored }} <span class="text-pink-500">{{ guessCounter }}</span> {{ points }}</p>
     <button @click="submitScore();disableLeaderboardBtn();"
     class="mt-4 mb-3 flex-shrink-0 bg-pink-500
     hover:bg-pink-400 border-pink-500 hover:border-pink-400
     text-sm border-4 text-white py-1 px-2 rounded" id="leaderboard-button">
-    Save score to the leaderboard🥇 🥈 🥉 </button>
+    {{ leaderboardBtn }} </button>
   </div>
   <div v-if="showRetryBtn">
     <button id="retry-button"
@@ -118,6 +118,7 @@ export default {
     showRetryBtn: false,
     mapsNumber: 5,
     MAX_MAP_POINTS: 2,
+    loadingText: null,
     nextText: 'Next ➡️',
     submitText: 'Submit ⬅️',
     startText: 'Start  ▶️',
@@ -128,6 +129,10 @@ export default {
     settingsText: '🛠 Settings:',
     rulesHeading: '📃 Game Rules:',
     nameText: '🗣 Current name: ',
+    hasScored: '🎖 Has scored:',
+    userEmoji: '👤',
+    points: 'points',
+    leaderboardBtn: 'Save score to the leaderboard🥇 🥈 🥉',
     howText1: 'How many maps do you want?',
     howText2: 'How many seconds do you need?',
     howText3: 'How hard do you want to blur the image?',
@@ -144,6 +149,7 @@ export default {
       document.querySelector('input').focus();
       setTimeout(() => {
         this.mapImage = this.maps[this.mapIndex].image;
+        this.loadingText = '';
         this.mapName = this.maps[this.mapIndex].name;
         this.mapArtist = this.maps[this.mapIndex].artist;
         this.secondsToGuess = this.secondsValue;
@@ -152,7 +158,7 @@ export default {
         setTimeout(() => {
           document.getElementById('map-img').style.setProperty('filter', `blur(${this.blurValue}px)`);
         }, 20);
-      }, 200);
+      }, 750);
     },
     checkMapIndex() {
       if (this.mapIndex >= this.mapsNumber) {
@@ -245,6 +251,7 @@ export default {
       this.setCurrentMap();
     },
     displayGame() {
+      this.loadingText = 'Loading...';
       document.querySelector('#map-form').style.display = 'block';
       document.querySelector('input').focus();
       document.querySelector('#next-button').style.display = 'block';

@@ -32,6 +32,7 @@
     @click="getMaps();setCurrentMap();displayGame();">
   {{ startText }}
   </button>
+    <div class="mt-3 text-xl">{{ loadingText }}</div>
     <div v-if="mapAudio" class="flex justify-center mt-5">
   <audio id="map-audio" :src="mapAudio" controls></audio>
     </div>
@@ -70,13 +71,13 @@
   {{ nextText }}
   </button>
   <div id="score-screen" class="mt-10 text-lg">
-    <p class="mb-1 text-pink-500">👤 {{ userName }}</p>
-    <p>🎖 Has scored: <span class="text-pink-500">{{ guessCounter }}</span> points</p>
+    <p class="mb-1 text-pink-500">{{ userEmoji }} {{ userName }}</p>
+    <p>{{ hasScored }} <span class="text-pink-500">{{ guessCounter }}</span> {{ points }}</p>
   <button @click="submitScore();disableLeaderboardBtn();"
   class="mt-4 mb-3 flex-shrink-0 bg-pink-500
   hover:bg-pink-400 border-pink-500 hover:border-pink-400
   text-sm border-4 text-white py-1 px-2 rounded" id="leaderboard-button">
-  Save score to the leaderboard🥇 🥈 🥉 </button>
+  {{ leaderboardBtn }} </button>
   </div>
   <div v-if="showRetryBtn">
     <button id="retry-button"
@@ -113,6 +114,7 @@ export default {
     showRetryBtn: false,
     mapsNumber: 5,
     MAX_MAP_POINTS: 2,
+    loadingText: null,
     nextText: 'Next ➡️',
     submitText: 'Submit ⬅️',
     startText: 'Start  ▶️',
@@ -123,6 +125,10 @@ export default {
     settingsText: '🛠 Settings:',
     rulesHeading: '📃 Game Rules:',
     nameText: '🗣 Current name: ',
+    hasScored: '🎖 Has scored:',
+    userEmoji: '👤',
+    points: 'points',
+    leaderboardBtn: 'Save score to the leaderboard🥇 🥈 🥉',
     howText1: 'How many maps do you want?',
     howText2: 'How many seconds do you need?',
     nameInfo: 'Choose the name to display in leaderboard. Otherwise it will be Anonymous',
@@ -138,18 +144,20 @@ export default {
       document.querySelector('input').focus();
       setTimeout(() => {
         this.mapAudio = this.maps[this.mapIndex].audio;
+        this.loadingText = '';
         this.mapName = this.maps[this.mapIndex].name;
         this.mapArtist = this.maps[this.mapIndex].artist;
         this.secondsToGuess = this.secondsValue;
         setTimeout(() => {
+          document.getElementById('map-audio').volume = 0.4;
           document.getElementById('map-audio').play();
-        }, 50);
+        }, 30);
         this.launchTimer();
         this.mapIndex += 1;
-      }, 100);
+      }, 700);
     },
     checkMapIndex() {
-      if (this.mapIndex === this.mapsNumber) {
+      if (this.mapIndex >= this.mapsNumber) {
         this.displayScoreScreen();
       }
     },
@@ -239,6 +247,7 @@ export default {
       this.setCurrentMap();
     },
     displayGame() {
+      this.loadingText = 'Loading...';
       document.querySelector('#map-form').style.display = 'block';
       document.querySelector('input').focus();
       document.querySelector('#next-button').style.display = 'block';
