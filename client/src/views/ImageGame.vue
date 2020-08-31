@@ -306,6 +306,9 @@ export default {
         this.userErr = '❗️ Please choose a name';
         document.getElementById('start-button').disabled = true;
         document.querySelector('#start-button').className = 'flex-shrink-0 bg-gray-500 hover:bg-gray-400 border-gray-500 hover:border-gray-400 text-sm border-4 text-white py-1 px-2 rounded';
+      } else if (this.mapsNumber === '0') {
+        this.userErr = '';
+        document.getElementById('start-button').disabled = true;
       } else {
         this.userErr = '';
         document.getElementById('start-button').disabled = false;
@@ -317,6 +320,9 @@ export default {
         this.mapErr = '❗️ Choose at least 1 map';
         document.getElementById('start-button').disabled = true;
         document.querySelector('#start-button').className = 'flex-shrink-0 bg-gray-500 hover:bg-gray-400 border-gray-500 hover:border-gray-400 text-sm border-4 text-white py-1 px-2 rounded';
+      } else if (this.userName.trim() === '') {
+        this.mapErr = '';
+        document.getElementById('start-button').disabled = true;
       } else {
         this.mapErr = '';
         document.getElementById('start-button').disabled = false;

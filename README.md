@@ -28,6 +28,7 @@ MEVN Stack
 # ToDo
 * Multiplayer
 * Customize audio player
+* Add more maps
 
 # License 📑 
 (c) 2020 Ilya Revenko. [MIT License](https://tldrlegal.com/license/mit-license)
