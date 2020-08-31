@@ -154,7 +154,7 @@ export default {
         }, 30);
         this.launchTimer();
         this.mapIndex += 1;
-      }, 1100);
+      }, 1900);
     },
     checkMapIndex() {
       if (this.mapIndex >= this.mapsNumber) {
