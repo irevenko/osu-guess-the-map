@@ -3,11 +3,12 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongodb = require('mongodb');
 const MongoClient = require('mongodb').MongoClient;
+require('dotenv').config();
 
 const app = express();
 const router = express.Router();
 const PORT = process.env.PORT || 4000;
-const MONGO_URI = process.env.DB_URI || 'mongodb+srv://irevenko:mongo2001@osgtm.xwsuc.mongodb.net/osu-map?retryWrites=true&w=majority';
+const MONGO_URI = process.env.DB_URI || 'mongodb://127.0.0.1:27017/osu-map';
 const dbName = 'osu-map';
 
 app.use(bodyParser.json());

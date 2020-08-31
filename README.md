@@ -23,12 +23,13 @@ MEVN Stack
 ```go to localhost:8080```
 
 # What I Learned 🧠
-* Vue
+* Vue, routing
 
 # ToDo
 * Multiplayer
 * Customize audio player
 * Add more maps
+* Add other assests
 
 # License 📑 
 (c) 2020 Ilya Revenko. [MIT License](https://tldrlegal.com/license/mit-license)
