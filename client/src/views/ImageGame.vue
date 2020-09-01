@@ -156,6 +156,7 @@ export default {
         setTimeout(() => {
           document.getElementById('map-img').style.setProperty('filter', `blur(${this.blurValue}px)`);
         }, 20);
+        document.querySelector('#map-input').focus();
         this.launchTimer();
         this.mapIndex += 1;
       }, delayTime);

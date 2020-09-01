@@ -21,7 +21,7 @@
     </form>
     <p class="mt-6">{{ howText1 }}</p>
     <div class="text-red-500">{{ mapErr }}</div>
-    <input type="range" min="0" max="100" step="1" v-model="mapsNumber">
+    <input type="range" min="0" max="150" step="1" v-model="mapsNumber">
     <div class="text-pink-500 text-xl" v-text="mapsNumber"></div>
     <p>{{ howText2 }}</p>
     <input type="range" min="0" max="100" step="1" v-model="secondsValue">
@@ -146,7 +146,6 @@ export default {
     getMaps,
     submitScore,
     setCurrentMap(delayTime) {
-      document.querySelector('input').focus();
       setTimeout(() => {
         this.mapAudio = this.maps[this.mapIndex].audio;
         this.loadingText = '';
@@ -157,6 +156,7 @@ export default {
           document.getElementById('map-audio').volume = 0.4;
           document.getElementById('map-audio').playbackRate = this.speedValue;
           document.getElementById('map-audio').play();
+          document.querySelector('#map-input').focus();
         }, 30);
         this.launchTimer();
         this.mapIndex += 1;
