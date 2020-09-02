@@ -1,6 +1,6 @@
 # osu! guess the map game 🎲🧩
 MEVN Stack <br>
-Current maps number: <b>163</b> <br>
+Current maps number: <b>251</b> <br>
 https://osu-guess-the-map.herokuapp.com
 
 # Technologies 🧾
@@ -44,6 +44,7 @@ https://osu-guess-the-map.herokuapp.com
 * Add more maps (from osu mega mix favorites memories (memes))
 * Add other assests
 * After loose show image or audio
+* ? Add quiz with 4 variants
 
 # License 📑 
 (c) 2020 Ilya Revenko. [MIT License](https://tldrlegal.com/license/mit-license)
