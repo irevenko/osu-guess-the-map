@@ -24,7 +24,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 async function loadData(collectionName) {
-  const client = await mongodb.MongoClient.connect(MONGO_URI,
+  const client = await mongodb.MongoClient.connect(
+    'mongodb+srv://irevenko:14yjzmongo@osgtm.xwsuc.mongodb.net/osu-map?retryWrites=true&w=majority',
     { useNewUrlParser: true, useUnifiedTopology: true });
   return client.db(dbName).collection(collectionName);
 }
