@@ -21,10 +21,10 @@
     </form>
     <p class="mt-6">{{ howText1 }}</p>
     <div class="text-red-500">{{ mapErr }}</div>
-    <input type="range" min="0" max="150" step="1" v-model="mapsNumber">
+    <input type="range" min="0" max="300" step="1" v-model="mapsNumber">
     <div class="text-pink-500 text-xl" v-text="mapsNumber"></div>
     <p>{{ howText2 }}</p>
-    <input type="range" min="0" max="100" step="1" v-model="secondsValue">
+    <input type="range" min="5" max="100" step="1" v-model="secondsValue">
     <div class="text-pink-500 text-xl" v-text="secondsValue"></div>
     <p>{{ howText3 }}</p>
     <input type="range" min="0.50" max="3.05" step="0.10" v-model="speedValue">
