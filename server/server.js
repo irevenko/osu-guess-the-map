@@ -41,7 +41,7 @@ router.get('/api/get/all_scores', async (req, res) => {
 });
 
 router.post('/api/post/submit_lb', async (req, res) => { 
-  MongoClient.connect(MONGO_URI,
+  MongoClient.connect('mongodb+srv://irevenko:14yjzmongo@osgtm.xwsuc.mongodb.net/osu-map?retryWrites=true&w=majority',
     { useNewUrlParser: true, useUnifiedTopology: true },
     (err, client) => {
     console.log("Connected successfully to server");
