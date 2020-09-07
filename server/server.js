@@ -15,12 +15,10 @@ app.use(cors());
 app.use(router);
 app.use(express.urlencoded({ extended: true }));
 
-if (true) { 
-  app.use(express.static(__dirname + '/public/'));
-  app.get(/.*/, (req, res) => { 
-    res.sendFile(__dirname + '/public/index.html');
-  });
-}
+app.use(express.static(__dirname + "/public/"));
+app.get(/.*/ , function(req,res) {
+  res.sendfile(__dirname + "/public/index.html");
+});
 
 async function makeConnection(app, PORT) {
   try {
