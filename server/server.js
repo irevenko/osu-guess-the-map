@@ -1,15 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const mongodb = require('mongodb');
-const MongoClient = require('mongodb').MongoClient;
+const mongoose = require('mongoose');
+const Map = require('./models/Map');
+const Score = require('./models/Score');
 require('dotenv').config();
 
 const app = express();
 const router = express.Router();
 const PORT = process.env.PORT || 4000;
-const MONGO_URI = process.env.DB_URI || 'mongodb://127.0.0.1:27017/osu-map';
-const dbName = 'osu-map';
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -23,37 +22,37 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-async function loadData(collectionName) {
-  const client = await mongodb.MongoClient.connect(
-    'mongodb+srv://irevenko:14yjzmongo@osgtm.xwsuc.mongodb.net/osu-map?retryWrites=true&w=majority',
-    { useNewUrlParser: true, useUnifiedTopology: true });
-  return client.db(dbName).collection(collectionName);
+async function makeConnection(app, PORT) {
+  try {
+    await mongoose.connect(process.env.DB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('Connected to db!');
+    app.listen(PORT, () => console.log(`Server is listening at port: ${PORT}`));
+  } catch (err) {
+    console.error(err.message);
+  }
 }
 
+makeConnection(app, PORT);
+
 router.get('/api/get/all_maps', async (req, res) => {
-  const maps = await loadData('maps');
-  res.send(await maps.find({}).toArray());
+  const maps = await Map.find({});
+  res.send(maps);
 });
 
 router.get('/api/get/all_scores', async (req, res) => {
-  const scores = await loadData('scores');
-  res.send(await scores.find({}).toArray());
+  const scores = await Score.find({});
+  res.send(scores);
 });
 
 router.post('/api/post/submit_lb', async (req, res) => { 
-  MongoClient.connect('mongodb+srv://irevenko:14yjzmongo@osgtm.xwsuc.mongodb.net/osu-map?retryWrites=true&w=majority',
-    { useNewUrlParser: true, useUnifiedTopology: true },
-    (err, client) => {
-    console.log("Connected successfully to server");
-
-    const db = client.db(dbName);
-    db.collection('scores').insertOne(
-      { user : req.body.userName, points : req.body.points, date : req.body.date }, 
-      () => {
-      console.log("Inserted document into the collection");
-    });
+  const newScore = new Score({
+    user : req.body.userName, 
+    points : req.body.points, 
+    date : new Date().toLocaleString(),
   });
-  
+  await newScore.save();
+  res.status(201).send(); 
 });
-
-app.listen(PORT, () => console.log(`Server is listening at port: ${PORT}`));

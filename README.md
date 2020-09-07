@@ -41,11 +41,11 @@ https://osu-guess-the-map.herokuapp.com
 # ToDo
 * Multiplayer
 * Customize audio player
-* More maps?
+* More maps
 * Add other assests
-* After loose show image or audio
-* ? Add quiz with 4 variants
-* Hints, break input into array
+* Add quiz with 4 variants
+* Hints
+* New input check system
 
 # License 📑 
 (c) 2020 Ilya Revenko. [MIT License](https://tldrlegal.com/license/mit-license)

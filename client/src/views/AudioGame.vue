@@ -222,6 +222,7 @@ export default {
           }
         } else {
           this.isWrong = '⛔️ Input data is not valid! Try again 🔄.';
+          document.querySelector('#map-input').focus();
         }
       } catch (err) {
         return err;

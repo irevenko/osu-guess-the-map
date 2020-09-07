@@ -2,8 +2,8 @@ const { Schema, model } = require('mongoose');
 
 const scoreSchema = new Schema({
   user: String,
-  points: String,
-  date: new Date().toLocaleString(),
+  points: Number,
+  date: String,
 });
 
 module.exports = model('Score', scoreSchema);

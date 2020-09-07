@@ -26,13 +26,10 @@ async function submitScore() {
   try {
     const points = this.guessCounter;
     const { userName } = this;
-    const date = new Date().toLocaleString();
-    const res = await axios.post('api/post/submit_lb', {
+    await axios.post('api/post/submit_lb', {
       points,
       userName,
-      date,
     });
-    console.log(res);
   } catch (err) {
     return err;
   }
